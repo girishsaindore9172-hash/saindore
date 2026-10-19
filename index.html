@@ -1,0 +1,2202 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>वीट व्यवसाय व्यवस्थापन</title>
+  <style>
+    :root {
+      --primary: #c0392b;
+      --primary-dark: #962d22;
+      --bg: #f1f2f6;
+      --card: #ffffff;
+      --text: #2f3542;
+      --border: #ced6e0;
+      --success: #27ae60;
+      --danger: #e74c3c;
+    }
+    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); padding-bottom: 60px; }
+
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 14px 16px;
+      font-size: 1.15rem;
+      font-weight: bold;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    .container { padding: 14px; max-width: 550px; margin: auto; }
+    .screen { display: none; }
+    .screen.active { display: block !important; }
+
+    .menu-card {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid var(--border);
+      transition: all 0.2s ease;
+    }
+    .menu-card:hover { border-color: var(--primary); background: #fffcfc; }
+    .menu-left { display: flex; align-items: center; gap: 12px; }
+    .menu-icon { font-size: 1.8rem; }
+    .menu-title { font-size: 1.05rem; font-weight: bold; color: var(--primary-dark); }
+    .menu-sub { font-size: 0.8rem; color: #747d8c; margin-top: 3px; }
+    .menu-arrow { font-size: 1.2rem; color: var(--primary); font-weight: bold; }
+
+    .form-card { background: white; border-radius: 10px; padding: 16px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.04); margin-bottom: 12px; }
+    .form-group { margin-bottom: 11px; }
+    label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 4px; color: #475569; }
+    input, select, textarea { width: 100%; padding: 9px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.92rem; background: #fafafa; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); background: white; }
+    
+    .btn-row { display: flex; gap: 8px; margin-top: 14px; }
+    .btn { flex: 1; padding: 11px; border: none; border-radius: 6px; font-size: 0.92rem; font-weight: bold; cursor: pointer; text-align: center; }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-secondary { background: #747d8c; color: white; }
+    .btn-success { background: var(--success); color: white; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-sm { padding: 6px 10px; font-size: 0.8rem; border-radius: 5px; flex: initial; }
+
+    .nav-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .back-btn { background: #dfe4ea; color: #2f3542; padding: 6px 12px; border-radius: 6px; border: none; font-weight: bold; font-size: 0.85rem; cursor: pointer; }
+    .page-title { font-weight: bold; font-size: 1rem; color: var(--primary-dark); }
+    .status-msg { margin-top: 10px; text-align: center; font-weight: bold; font-size: 0.88rem; display: none; color: var(--success); }
+
+    .list-row { background: #fbfcfc; border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 10px; }
+    .suggestions { border: 1px solid var(--border); border-radius: 4px; max-height: 120px; overflow-y: auto; background: white; display: none; margin-top: 2px; }
+    .suggestion-item { padding: 8px 10px; cursor: pointer; border-bottom: 1px solid #f1f2f6; font-size: 0.88rem; }
+    .suggestion-item:hover { background: #f8f9fa; }
+
+    .bal-red { color: var(--danger); font-weight: bold; }
+    .bal-green { color: var(--success); font-weight: bold; }
+
+    .radio-box { display: flex; gap: 15px; margin-bottom: 12px; padding: 10px; background: #f8f9fa; border-radius: 6px; border: 1px solid #e2e8f0; font-size: 0.9rem; font-weight: 600; }
+    .radio-box label { margin: 0; display: flex; align-items: center; gap: 5px; cursor: pointer; }
+
+    @media print {
+      body { background: white; padding-bottom: 0; }
+      header, .nav-bar, .btn, input, select, textarea, .suggestions, .radio-box { display: none !important; }
+      .container { max-width: 100%; padding: 0; margin: 0; }
+      .form-card, .list-row { border: 1px solid #333; box-shadow: none; page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>🧱 वीट व्यवसाय व्यवस्थापन</header>
+
+  <div class="container">
+
+    <!-- ======================================================== -->
+    <!-- 🏠 मुख्य स्क्रीन (HOME SCREEN: सर्व ९ मुख्य विभाग)        -->
+    <!-- ======================================================== -->
+    <div id="screen-home" class="screen active">
+      <div style="font-size: 0.95rem; font-weight: bold; color: #57606f; margin-bottom: 12px;">सर्व ९ विभाग:</div>
+
+      <div class="menu-card" onclick="showScreen('screen-supply-menu')">
+        <div class="menu-left"><span class="menu-icon">🚛</span><div><div class="menu-title">१. वीट सप्लाय</div><div class="menu-sub">नोंद, सर्व नोंदी, टोटल, लेबर हिशोब</div></div></div>
+        <span class="menu-arrow">➔</span>
+      </div>
+
+      <div class="menu-card" onclick="showScreen('screen-cust-menu')">
+        <div class="menu-left"><span class="menu-icon">👥</span><div><div class="menu-title">२. ग्राहक विभाग</div><div class="menu-sub">नवीन जमा, बाकी जमा, ग्राहक हिशोब व PDF</div></div></div>
+        <span class="menu-arrow">➔</span>
+      </div>
+
+      <div class="menu-card" onclick="showScreen('screen-alekar-menu')">
+        <div class="menu-left"><span class="menu-icon">👨‍🌾</span><div><div class="menu-title">३. आळेकरी विभाग</div><div class="menu-sub">माहिती, माल नोंद, बाजार, टोटल हिशोब, Date Range</div></div></div>
+        <span class="menu-arrow">➔</span>
+      </div>
+
+      <div class="menu-card" onclick="showScreen('screen-transport-menu')">
+        <div class="menu-left"><span class="menu-icon">🚚</span><div><div class="menu-title">४. कच्चा माल वाहतूक</div><div class="menu-sub">वाहतूक नोंद, हिशोब, भट्टी हिशोब, रोजंदारी</div></div></div>
+        <span class="menu-arrow">➔</span>
+      </div>
+
+      <div class="menu-card" onclick="showScreen('screen-mat-menu')">
+        <div class="menu-left"><span class="menu-icon">📦</span><div><div class="menu-title">५. मटेरियल</div><div class="menu-sub">मटेरियल मालक (नोंद, बाकी, हिशोब) व भट्टी मालक</div></div></div>
+        <span class="menu-arrow">➔</span>
+      </div>
+
+      <div class="menu-card" onclick="showScreen('screen-soil-menu')">
+        <div class="menu-left"><span class="menu-icon">🚜</span><div><div class="menu-title">६. माती</div><div class="menu-sub">भट्टी मालक (वाहतूक) व माती मालक (खरेदी/बाकी)</div></div></div>
+        <span class="menu-arrow">➔</span>
+      </div>
+
+      <div class="menu-card" onclick="showScreen('screen-diesel-menu')">
+        <div class="menu-left"><span class="menu-icon">⛽</span><div><div class="menu-title">७. रोटा ट्रॅक्टर डिझेल</div><div class="menu-sub">वर्ष ऑटो-फिल, लिटर, रक्कम, वर्षनिहाय हिशोब</div></div></div>
+        <span class="menu-arrow">➔</span>
+      </div>
+
+      <div class="menu-card" onclick="showScreen('screen-exp-menu')">
+        <div class="menu-left"><span class="menu-icon">🛠️</span><div><div class="menu-title">८. इतर खर्च</div><div class="menu-sub">साहित्य/साधन, दुरुस्ती खर्च, वर्ष हिशोब व सर्च</div></div></div>
+        <span class="menu-arrow">➔</span>
+      </div>
+
+      <div class="menu-card" onclick="showScreen('screen-jcb-menu')">
+        <div class="menu-left"><span class="menu-icon">🏗️</span><div><div class="menu-title">९. JCB</div><div class="menu-sub">कामाची नोंद, बाकी जमा, मालक हिशोब व प्रिंट</div></div></div>
+        <span class="menu-arrow">➔</span>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 🚛 विभाग १: वीट सप्लाय मेनू व उप-स्क्रीन                 -->
+    <!-- ======================================================== -->
+    <div id="screen-supply-menu" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-home')">← मुख्य पान</button><span class="page-title">१. वीट सप्लाय</span></div>
+      <div class="menu-card" onclick="showScreen('screen-sup-new')"><div><div class="menu-title">१. नवीन नोंद</div><div class="menu-sub">खेप प्रकार, लेबर १ ते ६, डिझेल व विक्री</div></div><span class="menu-arrow">➔</span></div>
+      <div class="menu-card" onclick="renderSupList(); showScreen('screen-sup-list');"><div><div class="menu-title">२. सर्व नोंद तपशील</div><div class="menu-sub">मालकानुसार ग्रुपिंग, शोध, Edit/Delete</div></div><span class="menu-arrow">➔</span></div>
+      <div class="menu-card" onclick="calcSupSummary(); showScreen('screen-sup-sum');"><div><div class="menu-title">३. टोटल / समरी</div><div class="menu-sub">खेपा, वीट, रक्कम, डिझेल व Net Amount</div></div><span class="menu-arrow">➔</span></div>
+      <div class="menu-card" onclick="initLabourScreen(); showScreen('screen-sup-lab');"><div><div class="menu-title">४. लेबर आठवडे हिशोब</div><div class="menu-sub">मजुरांच्या हजर खेपा व Date Range फिल्टर</div></div><span class="menu-arrow">➔</span></div>
+    </div>
+
+    <!-- १.१ सप्लाय नवीन नोंद -->
+    <div id="screen-sup-new" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-supply-menu')">← मागे</button><span class="page-title">नवीन नोंद (सप्लाय)</span></div>
+      <div class="form-card">
+        <form id="supForm">
+          <input type="hidden" id="sup_id">
+          <div class="form-group"><label>तारीख</label><input type="date" id="sup_date" value="2026-10-15"></div>
+          <div class="form-group"><label>खेप प्रकार</label><select id="sup_type" onchange="toggleSupType()"><option value="वीट">वीट</option><option value="ठोकळा">ठोकळा</option><option value="खंगरी वीट">खंगरी वीट</option><option value="भुगा">भुगा</option><option value="खंगरी ढेपड">खंगरी ढेपड</option></select></div>
+          <div class="form-group" id="sup_qty_box"><label>प्रमाण (नग संख्या)</label><input type="number" id="sup_qty" placeholder="उदा. १२००" oninput="calcSupAmt()"></div>
+          <div class="form-group"><label>रेट (प्रति १००० नग / ट्रॉली)</label><input type="number" id="sup_rate" placeholder="उदा. ५०००" oninput="calcSupAmt()"></div>
+          <div class="form-group"><label>एकूण रक्कम (आपोआप)</label><input type="text" id="sup_amt" readonly style="font-weight:bold; color:var(--primary);"></div>
+          <label style="color:var(--primary); font-weight:bold; margin-top:8px;">👷 लेबर १ ते ६ नावे</label>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:10px;">
+            <input type="text" id="sup_l1" placeholder="लेबर १"><input type="text" id="sup_l2" placeholder="लेबर २"><input type="text" id="sup_l3" placeholder="लेबर ३"><input type="text" id="sup_l4" placeholder="लेबर ४"><input type="text" id="sup_l5" placeholder="लेबर ५"><input type="text" id="sup_l6" placeholder="लेबर ६">
+          </div>
+          <div class="form-group"><label>मालकाचे नाव</label><input type="text" id="sup_owner" placeholder="मालकाचे नाव"></div>
+          <div class="form-group"><label>मोबाईल नंबर</label><input type="tel" id="sup_mob" placeholder="मोबाईल"></div>
+          <div class="form-group"><label>गावाचे नाव</label><input type="text" id="sup_village" placeholder="गाव"></div>
+          <div class="form-group"><label>डिझेल खर्च (₹)</label><input type="number" id="sup_diesel" placeholder="उदा. ५००"></div>
+          <div class="btn-row">
+            <button type="button" class="btn btn-primary" id="btnSupSave" onclick="saveSupply()">💾 सेव्ह करा</button>
+            <button type="button" class="btn btn-secondary" onclick="resetSup()">🔄 पुसा</button>
+          </div>
+          <div id="sup_msg" class="status-msg">✅ नोंद सेव्ह झाली!</div>
+        </form>
+      </div>
+    </div>
+
+    <!-- १.२ सप्लाय सर्व नोंद -->
+    <div id="screen-sup-list" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-supply-menu')">← मागे</button><span class="page-title">सर्व नोंद तपशील</span></div>
+      <div style="display:flex; gap:6px; margin-bottom:10px;"><input type="text" id="sup_search" placeholder="मालक, गाव किंवा प्रकार शोधा..." oninput="renderSupList()"><button class="btn btn-secondary btn-sm" onclick="document.getElementById('sup_search').value=''; renderSupList();">पुसा</button></div>
+      <div id="sup_list_container"></div>
+    </div>
+    <div id="screen-sup-detail" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-sup-list')">← मागे</button><span class="page-title" id="sup_detail_title">खेपांचा तपशील</span></div>
+      <div id="sup_detail_rows"></div>
+    </div>
+
+    <!-- १.३ सप्लाय समरी -->
+    <div id="screen-sup-sum" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-supply-menu')">← मागे</button><span class="page-title">टोटल / समरी</span></div>
+      <div class="form-card">
+        <label>कस्टम तारीख निवडा:</label>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:10px;"><input type="date" id="ss_from" value="2026-10-01"><input type="date" id="ss_to" value="2026-10-15"></div>
+        <button class="btn btn-primary" style="width:100%; margin-bottom:12px;" onclick="calcSupSummary()">📊 हिशोब बघा</button>
+        <div style="background:#f8f9fa; border-radius:8px; padding:12px; border:1px solid var(--border);">
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>🚛 एकूण खेपा:</span> <strong id="ss_trips">०</strong></div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>🧱 एकूण वीट नग:</span> <strong id="ss_bricks">०</strong></div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>🚜 एकूण ट्रॉली:</span> <strong id="ss_trolley">०</strong></div>
+          <hr style="margin:6px 0;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>💰 एकूण रक्कम:</span> <strong id="ss_amt">₹ ०</strong></div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>⛽ डिझेल खर्च:</span> <strong id="ss_diesel">₹ ०</strong></div>
+          <hr style="margin:6px 0;">
+          <div style="display:flex; justify-content:space-between; color:var(--primary); font-size:1.1rem; font-weight:bold;"><span>💵 Net Amount:</span> <strong id="ss_net">₹ ०</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- १.४ लेबर आठवडे हिशोब -->
+    <div id="screen-sup-lab" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-supply-menu')">← मागे</button><span class="page-title">लेबर आठवडे हिशोब</span></div>
+      <div class="form-card">
+        <div class="form-group"><label>लेबर नाव निवडा</label><select id="slab_name"></select></div>
+        <label>Date Range निवडा:</label>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:10px;"><input type="date" id="slab_from" value="2026-10-01"><input type="date" id="slab_to" value="2026-10-15"></div>
+        <button class="btn btn-primary" style="width:100%; margin-bottom:12px;" onclick="calcLabourReport()">🔍 हिशोब बघा</button>
+        <div id="slab_result_box" style="background:#f8f9fa; border-radius:8px; padding:12px; border:1px solid var(--border);"></div>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 👥 विभाग २: ग्राहक विभाग                                  -->
+    <!-- ======================================================== -->
+    <div id="screen-cust-menu" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-home')">← मुख्य पान</button><span class="page-title">२. ग्राहक विभाग</span></div>
+      <div class="menu-card" onclick="showScreen('screen-cust-new')"><div><div class="menu-title">१. नवीन जमा नोंद</div><div class="menu-sub">ग्राहक, प्रकार, नग/ट्रॉली, जमा व बाकी</div></div><span class="menu-arrow">➔</span></div>
+      <div class="menu-card" onclick="showScreen('screen-cust-bal')"><div><div class="menu-title">२. बाकी जमा नोंद</div><div class="menu-sub">नाव शोध, आधीची बाकी ऑटो-लोड व हप्ता जमा</div></div><span class="menu-arrow">➔</span></div>
+      <div class="menu-card" onclick="renderCustMain(); showScreen('screen-cust-ledger');"><div><div class="menu-title">३. ग्राहक हिशोब</div><div class="menu-sub">शोध, पूर्ण हिशोब व Print/PDF</div></div><span class="menu-arrow">➔</span></div>
+    </div>
+
+    <!-- २.१ ग्राहक नवीन नोंद -->
+    <div id="screen-cust-new" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-cust-menu')">← मागे</button><span class="page-title">नवीन ग्राहक नोंद</span></div>
+      <div class="form-card">
+        <form id="custForm">
+          <div class="form-group"><label>तारीख</label><input type="date" id="cn_date" value="2026-10-15"></div>
+          <div class="form-group"><label>ग्राहकाचे नाव</label><input type="text" id="cn_name" placeholder="उदा. सचिन पाटील"></div>
+          <div class="form-group"><label>मोबाईल नंबर</label><input type="tel" id="cn_mob" placeholder="मोबाईल"></div>
+          <div class="form-group"><label>पत्ता</label><input type="text" id="cn_addr" placeholder="पत्ता/गाव"></div>
+          <div class="form-group"><label>मालाचा प्रकार</label><select id="cn_type" onchange="calcCustNew()"><option value="वीट">वीट</option><option value="ठोकळा">ठोकळा</option><option value="खंगरी वीट">खंगरी वीट</option><option value="भुगा">भुगा</option><option value="खंगरी ढेपड">खंगरी ढेपड</option></select></div>
+          <div class="form-group"><label>प्रमाण (नग संख्या / ट्रॉली)</label><input type="number" id="cn_qty" placeholder="उदा. १२००" oninput="calcCustNew()"></div>
+          <div class="form-group"><label>रेट (प्रति १००० नग / ट्रॉली)</label><input type="number" id="cn_rate" placeholder="उदा. ५०००" oninput="calcCustNew()"></div>
+          <div class="form-group"><label>एकूण रक्कम (आपोआप)</label><input type="text" id="cn_tot" readonly style="font-weight:bold; color:var(--primary);"></div>
+          <div class="form-group"><label>जमा रक्कम</label><input type="number" id="cn_paid" placeholder="उदा. २०००" oninput="calcCustNew()"></div>
+          <div class="form-group"><label>बाकी रक्कम (आपोआप)</label><input type="text" id="cn_bal" readonly style="font-weight:bold; color:var(--primary);"></div>
+          <div class="btn-row">
+            <button type="button" class="btn btn-primary" id="btnCustSave" onclick="saveCustNew()">💾 नोंद सेव्ह करा</button>
+            <button type="button" class="btn btn-secondary" onclick="resetCustNew()">🔄 पुसा</button>
+          </div>
+          <div id="cn_msg" class="status-msg">✅ नोंद सेव्ह झाली!</div>
+        </form>
+      </div>
+    </div>
+
+    <!-- २.२ ग्राहक बाकी जमा -->
+    <div id="screen-cust-bal" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-cust-menu')">← मागे</button><span class="page-title">ग्राहक बाकी जमा</span></div>
+      <div class="form-card">
+        <div class="form-group"><label>तारीख</label><input type="date" id="cb_date" value="2026-10-15"></div>
+        <div class="form-group" style="position:relative;"><label>ग्राहकाचे नाव (टाईप करा)</label><input type="text" id="cb_name" placeholder="नाव टाईप करा..." oninput="suggestCust(this.value)"><div id="cb_sug" class="suggestions"></div></div>
+        <div class="form-group"><label>आधीची बाकी</label><input type="text" id="cb_old_bal" readonly style="background:#eee; font-weight:bold; color:var(--primary);"></div>
+        <div class="form-group"><label>जमा रक्कम</label><input type="number" id="cb_paid" placeholder="उदा. २०००"></div>
+        <div class="form-group"><label>टीप</label><input type="text" id="cb_note" placeholder="उदा. PhonePe / रोख"></div>
+        <div class="btn-row"><button type="button" class="btn btn-primary" id="btnCbSave" onclick="saveCustBal()">💾 जमा सेव्ह करा</button><button type="button" class="btn btn-secondary" onclick="resetCustBal()">🔄 पुसा</button></div>
+        <div id="cb_msg" class="status-msg">✅ नोंद सेव्ह झाली!</div>
+      </div>
+    </div>
+
+    <!-- २.३ ग्राहक हिशोब -->
+    <div id="screen-cust-ledger" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-cust-menu')">← मागे</button><span class="page-title">ग्राहक हिशोब</span></div>
+      <div style="display:flex; gap:6px; margin-bottom:10px;"><input type="text" id="cust_search" placeholder="ग्राहकाचे नाव शोधा..." oninput="renderCustMain()"><button class="btn btn-secondary btn-sm" onclick="document.getElementById('cust_search').value=''; renderCustMain();">पुसा</button></div>
+      <div id="cust_card_container"></div>
+    </div>
+    <div id="screen-cust-full" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-cust-ledger')">← मागे</button><span class="page-title">पूर्ण हिशोब व प्रिंट</span></div>
+      <div class="form-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div><div style="font-weight:bold; font-size:1.15rem;" id="cdet_name">नाव</div><div style="font-size:0.85rem; color:#666;" id="cdet_sub">पत्ता | मोबा</div></div>
+          <button class="btn btn-success btn-sm" onclick="window.print()">🖨️ Print / PDF</button>
+        </div>
+      </div>
+      <div id="cdet_rows"></div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 👨‍🌾 विभाग ३: आळेकरी विभाग                                 -->
+    <!-- ======================================================== -->
+    <div id="screen-alekar-menu" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-home')">← मुख्य पान</button><span class="page-title">३. आळेकरी विभाग</span></div>
+      <div class="menu-card" onclick="showScreen('screen-alekar-info')"><div><div class="menu-title">१. आळेकरी माहिती</div><div class="menu-sub">तारीख, नाव, पत्नी, मोबाईल, आधार व यादी</div></div><span class="menu-arrow">➔</span></div>
+      <div class="menu-card" onclick="showScreen('screen-alekar-prod')"><div><div class="menu-title">२. आळेकरी मालाची नोंद</div><div class="menu-sub">उचललेली वीट (५०=१०००), रेट व रक्कम</div></div><span class="menu-arrow">➔</span></div>
+      <div class="menu-card" onclick="showScreen('screen-alekar-market')"><div><div class="menu-title">३. आळेकरी बाजार नोंद</div><div class="menu-sub">दिलेले पैसे, कारण, मागील बाकी (लाल/हिरवा)</div></div><span class="menu-arrow">➔</span></div>
+      <div class="menu-card" onclick="renderAlekarTotal(); showScreen('screen-alekar-total');"><div><div class="menu-title">४. आळेकरी टोटल हिशोब</div><div class="menu-sub">वर्षनिहाय, शोध, सविस्तर व Print/PDF</div></div><span class="menu-arrow">➔</span></div>
+      <div class="menu-card" onclick="showScreen('screen-alekar-range')"><div><div class="menu-title">५. आळेकरी हिशोब (Date Range)</div><div class="menu-sub">कालावधीनुसार विटा, माल पैसे, उचल व हिशोब</div></div><span class="menu-arrow">➔</span></div>
+    </div>
+
+    <!-- ३.१ आळेकरी माहिती -->
+    <div id="screen-alekar-info" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-alekar-menu')">← मागे</button><span class="page-title">१. आळेकरी माहिती</span></div>
+      <div class="form-card">
+        <form id="aiForm">
+          <input type="hidden" id="ai_id">
+          <div class="form-group"><label>तारीख</label><input type="date" id="ai_date" value="2026-10-15"></div>
+          <div class="form-group"><label>आळेकरी नाव</label><input type="text" id="ai_name" placeholder="उदा. बाळू कांबळे"></div>
+          <div class="form-group"><label>पत्नीचे नाव</label><input type="text" id="ai_wife" placeholder="पत्नीचे नाव"></div>
+          <div class="form-group"><label>मोबाईल नंबर</label><input type="tel" id="ai_mob" placeholder="मोबाईल"></div>
+          <div class="form-group"><label>पत्ता</label><input type="text" id="ai_addr" placeholder="पत्ता"></div>
+          <div class="form-group"><label>आधार कार्ड नंबर</label><input type="text" id="ai_aadhar" placeholder="[Aadhaar Redacted]"></div>
+          <div class="form-group"><label>पत्नीचा आधार कार्ड</label><input type="text" id="ai_waadhar" placeholder="[Aadhaar Redacted]"></div>
+          <div class="btn-row"><button type="button" class="btn btn-primary" id="btnAiSave" onclick="saveAlekarInfo()">💾 सेव्ह करा</button><button type="button" class="btn btn-secondary" onclick="resetAi()">🔄 पुसा</button></div>
+          <div id="ai_msg" class="status-msg">✅ नोंद सेव्ह झाली!</div>
+          <button type="button" class="btn btn-success" style="width:100%; margin-top:12px;" onclick="renderAiList(); showScreen('screen-ai-list');">👁️ सर्व आळेकरी यादी बघा</button>
+        </form>
+      </div>
+    </div>
+    <div id="screen-ai-list" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-alekar-info')">← मागे</button><span class="page-title">सर्व आळेकरी नोंद यादी</span></div>
+      <div id="ai_list_container"></div>
+    </div>
+
+    <!-- ३.२ आळेकरी माल नोंद -->
+    <div id="screen-alekar-prod" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-alekar-menu')">← मागे</button><span class="page-title">२. आळेकरी मालाची नोंद</span></div>
+      <div class="form-card">
+        <div class="form-group"><label>तारीख</label><input type="date" id="ap_date" value="2026-10-15"></div>
+        <div class="form-group" style="position:relative;"><label>आळेकरी नाव (टाईप करा)</label><input type="text" id="ap_name" placeholder="नाव टाका..." oninput="suggestAlekar(this.value, 'ap_name', 'ap_sug')"><div id="ap_sug" class="suggestions"></div></div>
+        <div class="form-group"><label>दिवसाला उचललेली वीट (उदा. ५० = १००० वीट)</label><input type="number" id="ap_unit" placeholder="उदा. ५०" oninput="calcAp()"></div>
+        <div class="form-group"><label>वीट रेट (प्रति १००० दर)</label><input type="number" id="ap_rate" placeholder="उदा. १२५०" oninput="calcAp()"></div>
+        <div class="form-group"><label>एकूण माल पैसे (आपोआप)</label><input type="text" id="ap_tot" readonly style="font-weight:bold; color:var(--primary);"></div>
+        <div class="btn-row"><button type="button" class="btn btn-primary" id="btnApSave" onclick="saveAp()">💾 मालाची नोंद सेव्ह करा</button><button type="button" class="btn btn-secondary" onclick="resetAp()">🔄 पुसा</button></div>
+        <div id="ap_msg" class="status-msg">✅ नोंद सेव्ह झाली!</div>
+      </div>
+    </div>
+
+    <!-- ३.३ आळेकरी बाजार नोंद -->
+    <div id="screen-alekar-market" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-alekar-menu')">← मागे</button><span class="page-title">३. आळेकरी बाजार नोंद</span></div>
+      <div class="form-card">
+        <div class="form-group"><label>तारीख</label><input type="date" id="am_date" value="2026-10-15"></div>
+        <div class="form-group" style="position:relative;"><label>आळेकरी नाव</label><input type="text" id="am_name" placeholder="नाव टाका..." oninput="suggestAlekar(this.value, 'am_name', 'am_sug', true)"><div id="am_sug" class="suggestions"></div></div>
+        <div class="form-group"><label>दिलेले पैसे (₹)</label><input type="number" id="am_paid" placeholder="उदा. २०००"></div>
+        <div class="form-group"><label>पैसे कशासाठी दिले</label><input type="text" id="am_reason" placeholder="उदा. बाजार / किराणा"></div>
+        <div class="form-group"><label>मागील बाकी (येणे लाल / देणे हिरवा)</label><input type="text" id="am_bal" readonly style="background:#eee; font-size:1rem;"></div>
+        <div class="btn-row"><button type="button" class="btn btn-primary" id="btnAmSave" onclick="saveAm()">💾 नोंद सेव्ह करा</button><button type="button" class="btn btn-secondary" onclick="resetAm()">🔄 पुसा</button></div>
+        <div id="am_msg" class="status-msg">✅ नोंद सेव्ह झाली!</div>
+      </div>
+    </div>
+
+    <!-- ३.४ आळेकरी टोटल हिशोब -->
+    <div id="screen-alekar-total" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-alekar-menu')">← मागे</button><span class="page-title">४. आळेकरी टोटल हिशोब</span></div>
+      <div style="display:flex; gap:6px; margin-bottom:10px;"><input type="text" id="at_search" placeholder="नाव किंवा वर्ष टाका..." oninput="renderAlekarTotal()"><button class="btn btn-secondary btn-sm" onclick="document.getElementById('at_search').value=''; renderAlekarTotal();">पुसा</button></div>
+      <div id="at_cards_container"></div>
+    </div>
+    <div id="screen-alekar-detail" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-alekar-total')">← मागे</button><span class="page-title">हिशोब सविस्तर व प्रिंट</span></div>
+      <div class="form-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div><div style="font-weight:bold; font-size:1.15rem;" id="atd_title">नाव</div><div style="font-size:0.85rem; color:#666;" id="atd_sub">एकूण वीट व माल पैसे</div></div>
+          <button class="btn btn-success btn-sm" onclick="window.print()">🖨️ Print / PDF</button>
+        </div>
+      </div>
+      <div style="font-weight:bold; color:var(--primary); margin:8px 0;">🧱 मालाच्या नोंदी:</div><div id="atd_prod_rows"></div>
+      <div style="font-weight:bold; color:var(--danger); margin:8px 0;">💵 बाजार / उचल नोंदी:</div><div id="atd_market_rows"></div>
+    </div>
+
+    <!-- ३.५ आळेकरी Date Range -->
+    <div id="screen-alekar-range" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-alekar-menu')">← मागे</button><span class="page-title">५. आळेकरी Date Range हिशोब</span></div>
+      <div class="form-card">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:10px;"><input type="date" id="ar_from" value="2026-10-01"><input type="date" id="ar_to" value="2026-10-15"></div>
+        <button class="btn btn-primary" style="width:100%; margin-bottom:12px;" onclick="renderAlekarDateRange()">👁️ हिशोब बघा</button>
+        <div id="ar_results"></div>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 🚚 विभाग ४: कच्चा माल वाहतूक                               -->
+    <!-- ======================================================== -->
+    <div id="screen-transport-menu" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-home')">← मुख्य पान</button><span class="page-title">४. कच्चा माल वाहतूक</span></div>
+      <div class="menu-card" onclick="showScreen('screen-tr-new')"><div><div class="menu-title">१. वाहतूक नोंद</div><div class="menu-sub">तारीख, नाव, भट्टी १-१०, वाहिलेली वीट, रेट</div></div><span class="menu-arrow">➔</span></div>
+      <div class="menu-card" onclick="renderTrLedger(); showScreen('screen-tr-ledger');"><div><div class="menu-title">२. वाहतूक हिशोब</div><div class="menu-sub">नाव, वर्ष, Date Range, Edit/Delete व प्रिंट</div></div><span class="menu-arrow">➔</span></div>
+      <div class="menu-card" onclick="renderBhattiReport(); showScreen('screen-tr-bhatti');"><div><div class="menu-title">३. भट्टी टोटल वीट व मजुरी</div><div class="menu-sub">वर्ष सर्च बार, भट्टीनिहाय माल व वाहतूक मजुरी</div></div><span class="menu-arrow">➔</span></div>
+      <div class="menu-card" onclick="showScreen('screen-daily-new')"><div><div class="menu-title">४. रोजंदारी नोंद</div><div class="menu-sub">तारीख, लेबर नाव, पूर्ण/अर्धा दिवस, पैसे, काम</div></div><span class="menu-arrow">➔</span></div>
+      <div class="menu-card" onclick="renderDailyLedger(); showScreen('screen-daily-ledger');"><div><div class="menu-title">५. रोजंदारी हिशोब</div><div class="menu-sub">वर्षनिहाय ग्रुपिंग, Date Range, Edit/Del</div></div><span class="menu-arrow">➔</span></div>
+    </div>
+
+    <!-- ४.१ वाहतूक नोंद -->
+    <div id="screen-tr-new" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-transport-menu')">← मागे</button><span class="page-title">१. वाहतूक नोंद</span></div>
+      <div class="form-card">
+        <form id="trForm">
+          <input type="hidden" id="tr_id">
+          <div class="form-group"><label>तारीख</label><input type="date" id="tr_date" value="2026-10-15"></div>
+          <div class="form-group" style="position:relative;"><label>वाहतूक करणाऱ्याचे नाव</label><input type="text" id="tr_name" placeholder="नाव टाईप करा..." oninput="suggestTrName(this.value)"><div id="tr_sug" class="suggestions"></div></div>
+          <div class="form-group"><label>भट्टी प्रकार</label><select id="tr_btype"><option value="वीट">वीट</option><option value="ठोकळा">ठोकळा</option></select></div>
+          <div class="form-group"><label>भट्टी नंबर</label><select id="tr_bno"><option value="भट्टी १">भट्टी १</option><option value="भट्टी २">भट्टी २</option><option value="भट्टी ३">भट्टी ३</option><option value="भट्टी ४">भट्टी ४</option><option value="भट्टी ५">भट्टी ५</option><option value="भट्टी ६">भट्टी ६</option><option value="भट्टी ७">भट्टी ७</option><option value="भट्टी ८">भट्टी ८</option><option value="भट्टी ९">भट्टी ९</option><option value="भट्टी १०">भट्टी १०</option></select></div>
+          <div class="form-group"><label>वाहिलेली वीट (उदा. ५० = १००० वीट / ५७ = ११४० वीट)</label><input type="number" id="tr_unit" placeholder="उदा. ५० किंवा ५७" oninput="calcTr()"></div>
+          <div class="form-group"><label>वाहतूक रेट (प्रति १००० वीट)</label><input type="number" id="tr_rate" placeholder="उदा. ३००" oninput="calcTr()"></div>
+          <div class="form-group"><label>एकूण वाहतूक रक्कम (आपोआप)</label><input type="text" id="tr_amt" readonly style="font-weight:bold; color:var(--primary);"></div>
+          <div class="btn-row"><button type="button" class="btn btn-primary" id="btnTrSave" onclick="saveTr()">💾 नोंद सेव्ह करा</button><button type="button" class="btn btn-secondary" onclick="resetTr()">🔄 पुसा</button></div>
+          <div id="tr_msg" class="status-msg">✅ नोंद सेव्ह झाली!</div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ४.२ वाहतूक हिशोब -->
+    <div id="screen-tr-ledger" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-transport-menu')">← मागे</button><span class="page-title">२. वाहतूक हिशोब</span></div>
+      <div class="form-card">
+        <div class="form-group"><label>🔍 नाव किंवा वर्ष टाका</label><input type="text" id="trl_search" placeholder="उदा. गजानन किंवा २०२६"></div>
+        <label>Date Range निवडा:</label>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:10px;"><input type="date" id="trl_from" value="2026-10-01"><input type="date" id="trl_to" value="2026-10-15"></div>
+        <div class="btn-row" style="margin-top:0;"><button class="btn btn-primary" onclick="renderTrLedger()">🔍 शोधा</button><button class="btn btn-secondary" onclick="resetTrLedgerFilter()">🔄 पुसा</button></div>
+      </div>
+      <div id="tr_ledger_cards"></div>
+    </div>
+    <div id="screen-tr-detail" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-tr-ledger')">← मागे</button><span class="page-title">वाहतूक सविस्तर व प्रिंट</span></div>
+      <div class="form-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div><div style="font-weight:bold; font-size:1.15rem;" id="trd_title">नाव</div><div style="font-size:0.85rem; color:#666;" id="trd_sub">एकूण माल व रक्कम</div></div>
+          <button class="btn btn-success btn-sm" onclick="window.print()">🖨️ Print / PDF</button>
+        </div>
+      </div>
+      <div id="trd_rows"></div>
+    </div>
+
+    <!-- ४.३ भट्टी टोटल वीट व मजुरी (सर्च बारसह) -->
+    <div id="screen-tr-bhatti" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-transport-menu')">← मागे</button><span class="page-title">३. भट्टी टोटल वीट व मजुरी</span></div>
+      <div class="form-card">
+        <label>🔍 वर्ष टाका (Search Bar):</label>
+        <div style="display:flex; gap:6px; margin-bottom:10px;"><input type="text" id="tb_year" placeholder="वर्ष टाका (उदा. २०२६, २०२७)..."><button class="btn btn-primary btn-sm" onclick="renderBhattiReport()">शोधा</button><button class="btn btn-secondary btn-sm" onclick="document.getElementById('tb_year').value=''; renderBhattiReport();">पुसा</button></div>
+        <div style="background:#f8f9fa; border-radius:8px; padding:10px; border:1px solid var(--border); margin-bottom:12px;">
+          <div style="display:flex; justify-content:space-between;"><span>🧱 एकूण माल:</span> <strong id="tb_tot_bricks">० वीट</strong></div>
+          <div style="display:flex; justify-content:space-between; margin-top:4px;"><span>💰 एकूण वाहतूक खर्च:</span> <strong id="tb_tot_cost" style="color:var(--primary);">₹ ०</strong></div>
+        </div>
+        <div id="tb_cards_container"></div>
+      </div>
+    </div>
+
+    <!-- ४.४ रोजंदारी नोंद -->
+    <div id="screen-daily-new" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-transport-menu')">← मागे</button><span class="page-title">४. रोजंदारी नोंद</span></div>
+      <div class="form-card">
+        <form id="dailyForm">
+          <input type="hidden" id="dw_id">
+          <div class="form-group"><label>तारीख</label><input type="date" id="dw_date" value="2026-10-15"></div>
+          <div class="form-group"><label>लेबरचे नाव</label><input type="text" id="dw_name" placeholder="लेबरचे नाव"></div>
+          <div class="form-group"><label>रोजंदारी</label><select id="dw_shift"><option value="पूर्ण दिवस">पूर्ण दिवस</option><option value="अर्धा दिवस">अर्धा दिवस</option></select></div>
+          <div class="form-group"><label>कामाचे पैसे (रक्कम ₹)</label><input type="number" id="dw_amt" placeholder="उदा. ४००"></div>
+          <div class="form-group"><label>कामाची माहिती</label><textarea id="dw_desc" rows="2" placeholder="उदा. माती कालवणे / वीट रचणे"></textarea></div>
+          <div class="btn-row"><button type="button" class="btn btn-primary" id="btnDwSave" onclick="saveDailyWage()">💾 नोंद सेव्ह करा</button><button type="button" class="btn btn-secondary" onclick="resetDailyWage()">🔄 पुसा</button></div>
+          <div id="dw_msg" class="status-msg">✅ नोंद सेव्ह झाली!</div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ४.५ रोजंदारी हिशोब -->
+    <div id="screen-daily-ledger" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-transport-menu')">← मागे</button><span class="page-title">५. रोजंदारी हिशोब</span></div>
+      <div class="form-card">
+        <div class="form-group"><label>🔍 लेबर नाव किंवा वर्ष टाका</label><input type="text" id="dwl_search" placeholder="उदा. ज्ञानेश्वर किंवा २०२६"></div>
+        <label>Date Range निवडा:</label>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:10px;"><input type="date" id="dwl_from" value="2026-10-01"><input type="date" id="dwl_to" value="2026-10-15"></div>
+        <div class="btn-row" style="margin-top:0;"><button class="btn btn-primary" onclick="renderDailyLedger()">🔍 शोधा</button><button class="btn btn-secondary" onclick="resetDailyLedgerFilter()">🔄 पुसा</button></div>
+      </div>
+      <div id="dwl_cards_container"></div>
+    </div>
+    <div id="screen-daily-detail" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-daily-ledger')">← मागे</button><span class="page-title">रोजंदारी तपशील व प्रिंट</span></div>
+      <div class="form-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div><div style="font-weight:bold; font-size:1.15rem;" id="dwd_title">नाव</div><div style="font-size:0.85rem; color:#666;" id="dwd_sub">एकूण दिवस व रक्कम</div></div>
+          <button class="btn btn-success btn-sm" onclick="window.print()">🖨️ Print / PDF</button>
+        </div>
+      </div>
+      <div id="dwd_rows"></div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 📦 विभाग ५: मटेरियल                                       -->
+    <!-- ======================================================== -->
+    <div id="screen-mat-menu" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-home')">← मुख्य पान</button><span class="page-title">५. मटेरियल विभाग</span></div>
+      
+      <div style="font-weight:bold; color:var(--primary); margin:8px 0 6px;">🔹 मोडूल १: मटेरियल मालक</div>
+      <div class="menu-card" onclick="showScreen('screen-mat-owner-entry')"><div><div class="menu-title">१. मटेरियल नोंद</div><div class="menu-sub">वजन (टन), दर, एकूण रक्कम, वाहतूक (स्व:ता / मालक)</div></div><span class="menu-arrow">➔</span></div>
+      <div class="menu-card" onclick="showScreen('screen-mat-owner-bal')"><div><div class="menu-title">२. मालक बाकी जमा</div><div class="menu-sub">मटेरियल ड्रॉपडाऊन, मटेरियल बाकी, एकूण बाकी, जमा</div></div><span class="menu-arrow">➔</span></div>
+      <div class="menu-card" onclick="renderMatOwnerLedger(); showScreen('screen-mat-owner-ledger');"><div><div class="menu-title">३. मालक हिशोब</div><div class="menu-sub">सर्च, वर्ष+मटेरियल ग्रुपिंग, हिशोब व प्रिंट</div></div><span class="menu-arrow">➔</span></div>
+
+      <div style="font-weight:bold; color:var(--primary); margin:14px 0 6px;">🔹 मोडूल २: भट्टी मालक</div>
+      <div class="menu-card" onclick="showScreen('screen-mat-labour-entry')"><div><div class="menu-title">१. लेबर नोंद</div><div class="menu-sub">एकूण मजुरी, लेबर १ ते ६, प्रत्येकी मजुरी ऑटो-कॅल्क</div></div><span class="menu-arrow">➔</span></div>
+      <div class="menu-card" onclick="renderMatLabourLedger(); showScreen('screen-mat-labour-ledger');"><div><div class="menu-title">२. लेबर हिशोब</div><div class="menu-sub">सर्च, Date Range, Edit/Delete</div></div><span class="menu-arrow">➔</span></div>
+    </div>
+
+    <!-- ५.१.१ मटेरियल नोंद -->
+    <div id="screen-mat-owner-entry" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-mat-menu')">← मागे</button><span class="page-title">१. मटेरियल नोंद</span></div>
+      <div class="form-card">
+        <form id="moForm">
+          <input type="hidden" id="mo_id">
+          <div class="form-group"><label>तारीख</label><input type="date" id="mo_date" value="2026-10-15"></div>
+          <div class="form-group"><label>मालकाचे नाव</label><input type="text" id="mo_name" placeholder="उदा. राहुल जगताप"></div>
+          <div class="form-group"><label>मोबाईल नंबर</label><input type="tel" id="mo_mob" placeholder="मोबाईल"></div>
+          <div class="form-group"><label>गाव</label><input type="text" id="mo_village" placeholder="गाव"></div>
+          <div class="form-group"><label>मटेरियल नाव</label><input type="text" id="mo_mat" placeholder="उदा. कोळसा / राख / माती"></div>
+          <div class="form-group"><label>मटेरियलचे वजन (टन मध्ये)</label><input type="number" step="0.01" id="mo_weight" placeholder="उदा. २५.५" oninput="calcMoAmt()"></div>
+          <div class="form-group"><label>मटेरियल प्रती टन (दर ₹)</label><input type="number" id="mo_rate" placeholder="उदा. ३२००" oninput="calcMoAmt()"></div>
+          <div class="form-group"><label>एकूण रक्कम (आपोआप)</label><input type="text" id="mo_tot" readonly style="font-weight:bold; color:var(--primary);"></div>
+          <div class="form-group"><label>जमा केली (दिलेली रक्कम ₹)</label><input type="number" id="mo_paid" placeholder="उदा. ५००००"></div>
+
+          <label style="font-weight:bold; margin:8px 0 4px; display:block;">वाहतूक पर्याय निवडा:</label>
+          <div class="radio-box">
+            <label><input type="radio" name="mo_transport_mode" value="स्व:ता" checked onchange="toggleMoTransport()"> स्व:ता</label>
+            <label><input type="radio" name="mo_transport_mode" value="मालक" onchange="toggleMoTransport()"> मालक</label>
+          </div>
+
+          <div id="mo_trans_self">
+            <div class="form-group"><label>कशात आणले</label><input type="text" id="mo_s_vehicle" placeholder="उदा. ट्रॅक्टर / डंपर"></div>
+            <div class="form-group"><label>डिझेल खर्च (₹)</label><input type="number" id="mo_s_diesel" placeholder="उदा. १५००"></div>
+            <div class="form-group"><label>गाडी भाडे (₹)</label><input type="number" id="mo_s_rent" placeholder="उदा. ३०००"></div>
+            <div class="form-group"><label>टीप</label><textarea id="mo_s_note" rows="2" placeholder="टीप..."></textarea></div>
+          </div>
+          <div id="mo_trans_owner" style="display:none;">
+            <div class="form-group"><label>गाडी नंबर</label><input type="text" id="mo_o_vehicleno" placeholder="MH 14 XX 1234"></div>
+            <div class="form-group"><label>गाडी भाडे (₹)</label><input type="number" id="mo_o_rent" placeholder="उदा. ४५००"></div>
+            <div class="form-group"><label>इतर खर्च (₹)</label><input type="number" id="mo_o_exp" placeholder="उदा. ५००"></div>
+          </div>
+
+          <div class="btn-row"><button type="button" class="btn btn-primary" id="btnMoSave" onclick="saveMatOwnerEntry()">💾 नोंद सेव्ह करा</button><button type="button" class="btn btn-secondary" onclick="resetMatOwnerForm()">🔄 पुसा</button></div>
+          <div id="mo_msg" class="status-msg">✅ नोंद सेव्ह झाली!</div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ५.१.२ मालक बाकी जमा -->
+    <div id="screen-mat-owner-bal" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-mat-menu')">← मागे</button><span class="page-title">२. मालक बाकी जमा</span></div>
+      <div class="form-card">
+        <div class="form-group"><label>तारीख</label><input type="date" id="mob_date" value="2026-10-15"></div>
+        <div class="form-group" style="position:relative;"><label>मालकाचे नाव (टाईप करा)</label><input type="text" id="mob_name" placeholder="नाव टाका..." oninput="suggestMatOwner(this.value)"><div id="mob_sug" class="suggestions"></div></div>
+        <div class="form-group"><label>मटेरियल निवडा</label><select id="mob_mat_sel" onchange="loadMatOwnerBalDetail()"><option value="">आधी मालक निवडा</option></select></div>
+        <div class="form-group"><label>निवडलेल्या मटेरियलची बाकी</label><input type="text" id="mob_mat_bal" readonly style="background:#eee; font-weight:bold; color:var(--primary);"></div>
+        <div class="form-group"><label>एकूण बाकी (सर्व मटेरियल मिळून)</label><input type="text" id="mob_tot_bal" readonly style="background:#eee; font-weight:bold;"></div>
+        <div class="form-group"><label>जमा रक्कम (दिलेले पैसे ₹)</label><input type="number" id="mob_paid" placeholder="उदा. १००००"></div>
+        <div class="btn-row"><button type="button" class="btn btn-primary" id="btnMobSave" onclick="saveMatOwnerBal()">💾 नोंद सेव्ह करा</button><button type="button" class="btn btn-secondary" onclick="resetMatOwnerBal()">🔄 पुसा</button></div>
+        <div id="mob_msg" class="status-msg">✅ नोंद सेव्ह झाली!</div>
+      </div>
+    </div>
+
+    <!-- ५.१.३ मालक हिशोब -->
+    <div id="screen-mat-owner-ledger" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-mat-menu')">← मागे</button><span class="page-title">३. मालक हिशोब</span></div>
+      <div style="display:flex; gap:6px; margin-bottom:10px;"><input type="text" id="mol_search" placeholder="मालक, वर्ष, गाव किंवा मटेरियल शोधा..."><button class="btn btn-primary btn-sm" onclick="renderMatOwnerLedger()">बघा</button><button class="btn btn-secondary btn-sm" onclick="document.getElementById('mol_search').value=''; renderMatOwnerLedger();">पुसा</button></div>
+      <div id="mol_cards_container"></div>
+    </div>
+    <div id="screen-mat-owner-detail" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-mat-owner-ledger')">← मागे</button><span class="page-title">हिशोब सविस्तर व प्रिंट</span></div>
+      <div class="form-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div><div style="font-weight:bold; font-size:1.15rem;" id="mold_title">नाव</div><div style="font-size:0.85rem; color:#666;" id="mold_sub">गाव | मोबा | मटेरियल</div></div>
+          <button class="btn btn-success btn-sm" onclick="window.print()">🖨️ Print / PDF</button>
+        </div>
+      </div>
+      <div id="mold_rows"></div>
+    </div>
+
+    <!-- ५.२.१ भट्टी मालक: लेबर नोंद -->
+    <div id="screen-mat-labour-entry" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-mat-menu')">← मागे</button><span class="page-title">१. लेबर नोंद (भट्टी मालक)</span></div>
+      <div class="form-card">
+        <form id="mlForm">
+          <input type="hidden" id="ml_id">
+          <div class="form-group"><label>तारीख</label><input type="date" id="ml_date" value="2026-10-15"></div>
+          <div class="form-group"><label>मटेरियल नाव</label><input type="text" id="ml_mat" placeholder="उदा. कोळसा / राख"></div>
+          <div class="form-group"><label>एकूण मजुरी (₹)</label><input type="number" id="ml_tot_amt" placeholder="उदा. १०००" oninput="calcMatLabourSplit()"></div>
+          <label style="font-weight:bold; color:var(--primary); margin:6px 0 4px; display:block;">👷 लेबर नावे (१ ते ६):</label>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:8px;">
+            <input type="text" id="ml_l1" placeholder="लेबर १" oninput="calcMatLabourSplit()"><input type="text" id="ml_l2" placeholder="लेबर २" oninput="calcMatLabourSplit()">
+            <input type="text" id="ml_l3" placeholder="लेबर ३" oninput="calcMatLabourSplit()"><input type="text" id="ml_l4" placeholder="लेबर ४" oninput="calcMatLabourSplit()">
+            <input type="text" id="ml_l5" placeholder="लेबर ५" oninput="calcMatLabourSplit()"><input type="text" id="ml_l6" placeholder="लेबर ६" oninput="calcMatLabourSplit()">
+          </div>
+          <div class="form-group"><label>प्रत्येकी लेबर मजुरी (आपोआप)</label><input type="text" id="ml_split_amt" readonly style="font-weight:bold; color:var(--primary);"></div>
+          <div class="btn-row"><button type="button" class="btn btn-primary" id="btnMlSave" onclick="saveMatLabourEntry()">💾 नोंद सेव्ह करा</button><button type="button" class="btn btn-secondary" onclick="resetMatLabourForm()">🔄 पुसा</button></div>
+          <div id="ml_msg" class="status-msg">✅ नोंद सेव्ह झाली!</div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ५.२.२ भट्टी मालक: लेबर हिशोब -->
+    <div id="screen-mat-labour-ledger" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-mat-menu')">← मागे</button><span class="page-title">२. लेबर हिशोब (भट्टी मालक)</span></div>
+      <div class="form-card">
+        <div class="form-group"><label>🔍 वर्ष किंवा मटेरियल नाव टाका</label><input type="text" id="mll_search" placeholder="उदा. २०२६ किंवा कोळसा"></div>
+        <label>Date Range निवडा:</label>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:10px;"><input type="date" id="mll_from" value="2026-10-01"><input type="date" id="mll_to" value="2026-10-15"></div>
+        <div class="btn-row" style="margin-top:0;"><button class="btn btn-primary" onclick="renderMatLabourLedger()">🔍 शोधा</button><button class="btn btn-secondary" onclick="resetMatLabourLedgerFilter()">🔄 पुसा</button></div>
+      </div>
+      <div id="mll_rows_container"></div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 🚜 विभाग ६: माती                                          -->
+    <!-- ======================================================== -->
+    <div id="screen-soil-menu" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-home')">← मुख्य पान</button><span class="page-title">६. माती विभाग</span></div>
+      <div style="font-weight:bold; color:var(--primary); margin:8px 0 6px;">🔹 मोडूल १: भट्टी मालक</div>
+      <div class="menu-card" onclick="showScreen('screen-soil-trans-entry')"><div><div class="menu-title">१. माती वाहतूक नोंद</div><div class="menu-sub">तारीख, नाव (Auto-fill साधन व नंबर), डिझेल, खेप</div></div><span class="menu-arrow">➔</span></div>
+      <div class="menu-card" onclick="renderSoilTransLedger(); showScreen('screen-soil-trans-ledger');"><div><div class="menu-title">२. वाहतूक हिशोब</div><div class="menu-sub">वर्ष/नाव सर्च, एकूण खेपा, तपशील व Print/PDF</div></div><span class="menu-arrow">➔</span></div>
+
+      <div style="font-weight:bold; color:var(--primary); margin:14px 0 6px;">🔹 मोडूल २: माती मालक</div>
+      <div class="menu-card" onclick="showScreen('screen-soil-owner-entry')"><div><div class="menu-title">१. माती नोंद</div><div class="menu-sub">माती नोंद (खरेदी) व माती बाकी जमा पर्याय</div></div><span class="menu-arrow">➔</span></div>
+      <div class="menu-card" onclick="renderSoilOwnerLedger(); showScreen('screen-soil-owner-ledger');"><div><div class="menu-title">२. माती मालक हिशोब</div><div class="menu-sub">वर्षनिहाय, सर्च, पूर्ण हिशोब व Print/PDF</div></div><span class="menu-arrow">➔</span></div>
+    </div>
+
+    <!-- ६.१.१ माती वाहतूक नोंद -->
+    <div id="screen-soil-trans-entry" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-soil-menu')">← मागे</button><span class="page-title">१. माती वाहतूक नोंद</span></div>
+      <div class="form-card">
+        <form id="stForm">
+          <input type="hidden" id="st_id">
+          <div class="form-group"><label>तारीख</label><input type="date" id="st_date" value="2026-10-15" onchange="checkSoilTransAutofill()"></div>
+          <div class="form-group"><label>वाहतूक करणाऱ्याचे नाव</label><input type="text" id="st_name" placeholder="नाव टाका..." oninput="checkSoilTransAutofill()"></div>
+          <div class="form-group"><label>साधनाचे नाव (Auto-fill)</label><input type="text" id="st_vehicle" placeholder="उदा. ट्रॅक्टर / डंपर"></div>
+          <div class="form-group"><label>साधनाची नंबर प्लेट (Auto-fill)</label><input type="text" id="st_vehicleno" placeholder="MH 14 XX 1234"></div>
+          <div class="form-group"><label>डिझेल (₹)</label><input type="number" id="st_diesel" placeholder="उदा. ५००"></div>
+          <div class="form-group"><label>खेप झाली (नंबर बॉक्स)</label><input type="number" id="st_trips" placeholder="उदा. ४"></div>
+          <div class="btn-row"><button type="button" class="btn btn-primary" id="btnStSave" onclick="saveSoilTransEntry()">💾 नोंद सेव्ह करा</button><button type="button" class="btn btn-secondary" onclick="resetSoilTransForm()">🔄 पुसा</button></div>
+          <div id="st_msg" class="status-msg">✅ नोंद सेव्ह झाली!</div>
+          <button type="button" class="btn btn-success" style="width:100%; margin-top:12px;" onclick="renderSoilTransAllRows(); showScreen('screen-soil-trans-all');">👁️ सर्व नोंदी येथे पहा</button>
+        </form>
+      </div>
+    </div>
+    <div id="screen-soil-trans-all" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-soil-trans-entry')">← मागे</button><span class="page-title">सर्व माती वाहतूक नोंदी</span></div>
+      <div id="st_all_rows"></div>
+    </div>
+
+    <!-- ६.१.२ माती वाहतूक हिशोब -->
+    <div id="screen-soil-trans-ledger" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-soil-menu')">← मागे</button><span class="page-title">२. वाहतूक हिशोब</span></div>
+      <div style="display:flex; gap:6px; margin-bottom:10px;"><input type="text" id="stl_search" placeholder="वर्ष किंवा नाव शोधा..."><button class="btn btn-primary btn-sm" onclick="renderSoilTransLedger()">शोधा</button><button class="btn btn-secondary btn-sm" onclick="document.getElementById('stl_search').value=''; renderSoilTransLedger();">पुसा</button></div>
+      <div id="stl_cards_container"></div>
+    </div>
+    <div id="screen-soil-trans-detail" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-soil-trans-ledger')">← मागे</button><span class="page-title">वाहतूक संपूर्ण नोंद व प्रिंट</span></div>
+      <div class="form-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div><div style="font-weight:bold; font-size:1.15rem;" id="stld_title">नाव</div><div style="font-size:0.85rem; color:#666;" id="stld_sub">साधन व फेऱ्या</div></div>
+          <button class="btn btn-success btn-sm" onclick="window.print()">🖨️ Print / PDF</button>
+        </div>
+      </div>
+      <div id="stld_rows"></div>
+    </div>
+
+    <!-- ६.२.१ माती नोंद (माती मालक) -->
+    <div id="screen-soil-owner-entry" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-soil-menu')">← मागे</button><span class="page-title">१. माती नोंद (माती मालक)</span></div>
+      <div class="form-card">
+        <div class="radio-box">
+          <label><input type="radio" name="so_mode" value="माती नोंद" checked onchange="toggleSoilOwnerMode()"> माती नोंद (खरेदी)</label>
+          <label><input type="radio" name="so_mode" value="माती बाकी जमा" onchange="toggleSoilOwnerMode()"> माती बाकी जमा</label>
+        </div>
+
+        <!-- मोड १: माती नोंद -->
+        <div id="so_box_entry">
+          <form id="soFormEntry">
+            <div class="form-group"><label>तारीख</label><input type="date" id="soe_date" value="2026-10-15"></div>
+            <div class="form-group"><label>मालकाचे नाव</label><input type="text" id="soe_name" placeholder="उदा. पोपटराव शिंदे"></div>
+            <div class="form-group"><label>मोबाईल नंबर</label><input type="tel" id="soe_mob" placeholder="मोबाईल"></div>
+            <div class="form-group"><label>पत्ता</label><input type="text" id="soe_addr" placeholder="पत्ता"></div>
+            <div class="form-group"><label>मातीचा रेट</label><input type="number" id="soe_rate" placeholder="उदा. ३०००"></div>
+            <div class="form-group"><label>एकूण देय रक्कम</label><input type="number" id="soe_tot" placeholder="उदा. ६००००"></div>
+            <div class="form-group"><label>जमा पैसे</label><input type="number" id="soe_paid" placeholder="उदा. २००००"></div>
+            <div class="btn-row"><button type="button" class="btn btn-primary" id="btnSoeSave" onclick="saveSoilOwnerEntry()">💾 नोंद सेव्ह करा</button><button type="button" class="btn btn-secondary" onclick="resetSoilOwnerEntry()">🔄 पुसा</button></div>
+            <div id="soe_msg" class="status-msg">✅ नोंद सेव्ह झाली!</div>
+          </form>
+        </div>
+
+        <!-- मोड २: माती बाकी जमा -->
+        <div id="so_box_bal" style="display:none;">
+          <form id="soFormBal">
+            <div class="form-group"><label>तारीख</label><input type="date" id="sob_date" value="2026-10-15"></div>
+            <div class="form-group" style="position:relative;"><label>मालकाचे नाव (टाईप करा)</label><input type="text" id="sob_name" placeholder="नाव टाईप करा..." oninput="suggestSoilOwner(this.value)"><div id="sob_sug" class="suggestions"></div></div>
+            <div class="form-group"><label>बाकी रक्कम</label><input type="text" id="sob_bal" readonly style="background:#eee; font-weight:bold; color:var(--primary);"></div>
+            <div class="form-group"><label>जमा रक्कम</label><input type="number" id="sob_paid" placeholder="उदा. १००००"></div>
+            <div class="form-group"><label>टीप</label><textarea id="sob_note" rows="2" placeholder="उदा. रोख दिले / PhonePe"></textarea></div>
+            <div class="btn-row"><button type="button" class="btn btn-primary" id="btnSobSave" onclick="saveSoilOwnerBal()">💾 नोंद सेव्ह करा</button><button type="button" class="btn btn-secondary" onclick="resetSoilOwnerBal()">🔄 पुसा</button></div>
+            <div id="sob_msg" class="status-msg">✅ नोंद सेव्ह झाली!</div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ६.२.२ माती मालक हिशोब -->
+    <div id="screen-soil-owner-ledger" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-soil-menu')">← मागे</button><span class="page-title">२. माती मालक हिशोब</span></div>
+      <div style="display:flex; gap:6px; margin-bottom:10px;"><input type="text" id="sol_search" placeholder="वर्ष, नाव किंवा गाव शोधा..."><button class="btn btn-primary btn-sm" onclick="renderSoilOwnerLedger()">शोधा</button><button class="btn btn-secondary btn-sm" onclick="document.getElementById('sol_search').value=''; renderSoilOwnerLedger();">पुसा</button></div>
+      <div id="sol_cards_container"></div>
+    </div>
+    <div id="screen-soil-owner-detail" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-soil-owner-ledger')">← मागे</button><span class="page-title">पूर्ण हिशोब व प्रिंट</span></div>
+      <div class="form-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div><div style="font-weight:bold; font-size:1.15rem;" id="sold_name">नाव</div><div style="font-size:0.85rem; color:#666;" id="sold_sub">मोबाईल | पत्ता</div></div>
+          <button class="btn btn-success btn-sm" onclick="window.print()">🖨️ Print / PDF</button>
+        </div>
+      </div>
+      <div id="sold_rows"></div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- ⛽ विभाग ७: रोटा ट्रॅक्टर डिझेल                             -->
+    <!-- ======================================================== -->
+    <div id="screen-diesel-menu" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-home')">← मुख्य पान</button><span class="page-title">७. रोटा ट्रॅक्टर डिझेल</span></div>
+      <div class="form-card">
+        <form id="dieselForm">
+          <input type="hidden" id="rd_id">
+          <div class="form-group"><label>तारीख</label><input type="date" id="rd_date" value="2026-10-15"></div>
+          <div class="form-group"><label>वर्ष (Auto-fill राहील, हवे तेव्हा बदला)</label><input type="text" id="rd_year" placeholder="उदा. २०२६-२७"></div>
+          <div class="form-group"><label>डिझेल रक्कम (₹)</label><input type="number" id="rd_amt" placeholder="उदा. ३०००"></div>
+          <div class="form-group"><label>डिझेल किती लिटर टाकले</label><input type="number" step="0.01" id="rd_liters" placeholder="उदा. ३२.५"></div>
+          <div class="btn-row"><button type="button" class="btn btn-primary" id="btnRdSave" onclick="saveDieselEntry()">💾 नोंद सेव्ह करा</button><button type="button" class="btn btn-secondary" onclick="resetDieselForm()">🔄 पुसा</button></div>
+          <div id="rd_msg" class="status-msg">✅ नोंद सेव्ह झाली!</div>
+          <button type="button" class="btn btn-success" style="width:100%; margin-top:12px;" onclick="renderDieselYearlyList(); showScreen('screen-diesel-yearly');">👁️ सर्व नोंद बघा</button>
+        </form>
+      </div>
+    </div>
+    <div id="screen-diesel-yearly" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-diesel-menu')">← मागे</button><span class="page-title">डिझेल वर्षनिहाय हिशोब</span></div>
+      <div id="rd_yearly_cards"></div>
+    </div>
+    <div id="screen-diesel-detail" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-diesel-yearly')">← मागे</button><span class="page-title">डिझेल हिशोब व प्रिंट</span></div>
+      <div class="form-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div><div style="font-weight:bold; font-size:1.15rem;" id="rdd_title">वर्ष</div><div style="font-size:0.85rem; color:#666;" id="rdd_sub">एकूण रक्कम व लिटर</div></div>
+          <button class="btn btn-success btn-sm" onclick="window.print()">🖨️ Print / PDF</button>
+        </div>
+      </div>
+      <div id="rdd_rows"></div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 🛠️ विभाग ८: इतर खर्च                                      -->
+    <!-- ======================================================== -->
+    <div id="screen-exp-menu" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-home')">← मुख्य पान</button><span class="page-title">८. इतर खर्च</span></div>
+      <div class="form-card">
+        <form id="expForm">
+          <input type="hidden" id="ex_id">
+          <div class="form-group"><label>तारीख</label><input type="date" id="ex_date" value="2026-10-15"></div>
+          <div class="form-group"><label>साधनाचे नाव / साहित्य नाव</label><input type="text" id="ex_tool" placeholder="उदा. ट्रॅक्टर / ऑईल / ग्रीस"></div>
+          <div class="form-group"><label>काय काम केले</label><input type="text" id="ex_work" placeholder="उदा. वेल्डिंग / सर्व्हिसिंग"></div>
+          <div class="form-group"><label>खर्च किती आला (रक्कम ₹)</label><input type="number" id="ex_cost" placeholder="उदा. १५००"></div>
+          <div class="form-group"><label>टीप</label><textarea id="ex_note" rows="2" placeholder="टीप..."></textarea></div>
+          <div class="btn-row"><button type="button" class="btn btn-primary" id="btnExSave" onclick="saveExpenseEntry()">💾 नोंद सेव्ह करा</button><button type="button" class="btn btn-secondary" onclick="resetExpenseForm()">🔄 पुसा</button></div>
+          <div id="ex_msg" class="status-msg">✅ नोंद सेव्ह झाली!</div>
+          <button type="button" class="btn btn-success" style="width:100%; margin-top:12px;" onclick="renderExpenseYearlyList(); showScreen('screen-exp-yearly');">👁️ सर्व नोंदी बघा</button>
+        </form>
+      </div>
+    </div>
+    <div id="screen-exp-yearly" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-exp-menu')">← मागे</button><span class="page-title">इतर खर्च वर्षनिहाय हिशोब</span></div>
+      <div id="ex_yearly_cards"></div>
+    </div>
+    <div id="screen-exp-detail" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-exp-yearly')">← मागे</button><span class="page-title">खर्च तपशील व प्रिंट</span></div>
+      <div class="form-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <div><div style="font-weight:bold; font-size:1.15rem;" id="exd_title">वर्ष: २०२६</div><div style="font-size:0.85rem; color:#666;" id="exd_sub">एकूण खर्च</div></div>
+          <button class="btn btn-success btn-sm" onclick="window.print()">🖨️ Print / PDF</button>
+        </div>
+        <div style="display:flex; gap:6px;"><input type="text" id="exd_search" placeholder="साधन, साहित्य किंवा काम शोधा..." oninput="filterExpenseDetail()"><button class="btn btn-secondary btn-sm" onclick="document.getElementById('exd_search').value=''; filterExpenseDetail();">पुसा</button></div>
+      </div>
+      <div id="exd_rows"></div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 🏗️ विभाग ९: JCB                                           -->
+    <!-- ======================================================== -->
+    <div id="screen-jcb-menu" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-home')">← मुख्य पान</button><span class="page-title">९. JCB विभाग</span></div>
+      <div class="menu-card" onclick="showScreen('screen-jcb-work-entry')"><div><div class="menu-title">१. कामाची नोंद</div><div class="menu-sub">नवीन नोंद (वेळ, बिल, काम) व बाकी जमा (Auto-load)</div></div><span class="menu-arrow">➔</span></div>
+      <div class="menu-card" onclick="renderJcbLedger(); showScreen('screen-jcb-ledger');"><div><div class="menu-title">२. मालक हिशोब</div><div class="menu-sub">वर्षनिहाय कार्ड्स, पूर्ण हिशोब व Print/PDF</div></div><span class="menu-arrow">➔</span></div>
+    </div>
+
+    <!-- ९.१ JCB कामाची नोंद (नोंद व बाकी जमा) -->
+    <div id="screen-jcb-work-entry" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-jcb-menu')">← मागे</button><span class="page-title">१. JCB कामाची नोंद</span></div>
+      <div class="form-card">
+        <div class="radio-box">
+          <label><input type="radio" name="jcb_mode" value="नोंद" checked onchange="toggleJcbMode()"> नवीन नोंद</label>
+          <label><input type="radio" name="jcb_mode" value="बाकी जमा" onchange="toggleJcbMode()"> बाकी जमा</label>
+        </div>
+
+        <!-- पर्याय अ: नोंद -->
+        <div id="jcb_box_entry">
+          <form id="jcbFormEntry">
+            <div class="form-group"><label>तारीख</label><input type="date" id="jcbe_date" value="2026-10-15"></div>
+            <div class="form-group"><label>मालकाचे नाव</label><input type="text" id="jcbe_name" placeholder="उदा. नितीन थोरात"></div>
+            <div class="form-group"><label>मोबाईल नंबर</label><input type="tel" id="jcbe_mob" placeholder="मोबाईल"></div>
+            <div class="form-group"><label>किती वेळ चालला</label><input type="text" id="jcbe_time" placeholder="उदा. ३ तास ३० मिनिटे"></div>
+            <div class="form-group"><label>किती पैसे झाले (एकूण बिल ₹)</label><input type="number" id="jcbe_tot" placeholder="उदा. ४५००"></div>
+            <div class="form-group"><label>जमा केलेले पैसे (₹)</label><input type="number" id="jcbe_paid" placeholder="उदा. २०००"></div>
+            <div class="form-group"><label>काय काम केले</label><textarea id="jcbe_work" rows="2" placeholder="उदा. भट्टी समतल करणे"></textarea></div>
+            <div class="btn-row"><button type="button" class="btn btn-primary" id="btnJcbeSave" onclick="saveJcbEntry()">💾 नोंद सेव्ह करा</button><button type="button" class="btn btn-secondary" onclick="resetJcbEntry()">🔄 पुसा</button></div>
+            <div id="jcbe_msg" class="status-msg">✅ नोंद सेव्ह झाली!</div>
+          </form>
+        </div>
+
+        <!-- पर्याय ब: बाकी जमा -->
+        <div id="jcb_box_bal" style="display:none;">
+          <form id="jcbFormBal">
+            <div class="form-group"><label>तारीख</label><input type="date" id="jcbb_date" value="2026-10-15"></div>
+            <div class="form-group" style="position:relative;"><label>मालकाचे नाव (टाईप करा)</label><input type="text" id="jcbb_name" placeholder="नाव टाईप करा..." oninput="suggestJcbOwner(this.value)"><div id="jcbb_sug" class="suggestions"></div></div>
+            <div class="form-group"><label>बाकी रक्कम (Auto-load)</label><input type="text" id="jcbb_bal" readonly style="background:#eee; font-weight:bold; color:var(--primary);"></div>
+            <div class="form-group"><label>जमा रक्कम (₹)</label><input type="number" id="jcbb_paid" placeholder="उदा. १००००"></div>
+            <div class="form-group"><label>टीप</label><textarea id="jcbb_note" rows="2" placeholder="उदा. PhonePe / रोख दिले"></textarea></div>
+            <div class="btn-row"><button type="button" class="btn btn-primary" id="btnJcbbSave" onclick="saveJcbBal()">💾 नोंद सेव्ह करा</button><button type="button" class="btn btn-secondary" onclick="resetJcbBal()">🔄 पुसा</button></div>
+            <div id="jcbb_msg" class="status-msg">✅ नोंद सेव्ह झाली!</div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ९.२ JCB मालक हिशोब -->
+    <div id="screen-jcb-ledger" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-jcb-menu')">← मागे</button><span class="page-title">२. JCB मालक हिशोब</span></div>
+      <div style="display:flex; gap:6px; margin-bottom:10px;"><input type="text" id="jcbl_search" placeholder="वर्ष किंवा मालक शोधा..."><button class="btn btn-primary btn-sm" onclick="renderJcbLedger()">शोधा</button><button class="btn btn-secondary btn-sm" onclick="document.getElementById('jcbl_search').value=''; renderJcbLedger();">पुसा</button></div>
+      <div id="jcbl_cards_container"></div>
+    </div>
+    <div id="screen-jcb-detail" class="screen">
+      <div class="nav-bar"><button class="back-btn" onclick="showScreen('screen-jcb-ledger')">← मागे</button><span class="page-title">JCB पूर्ण हिशोब व प्रिंट</span></div>
+      <div class="form-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div><div style="font-weight:bold; font-size:1.15rem;" id="jcbd_name">नाव</div><div style="font-size:0.85rem; color:#666;" id="jcbd_sub">मोबाईल | वर्ष</div></div>
+          <button class="btn btn-success btn-sm" onclick="window.print()">🖨️ Print / PDF</button>
+        </div>
+      </div>
+      <div id="jcbd_rows"></div>
+    </div>
+
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- ⚙️ संपूर्ण डेटाबेस व कार्यपद्धती (JavaScript)                -->
+  <!-- ======================================================== -->
+  <script>
+    // १. LocalStorage Helper Functions
+    function getDB(key, def) {
+      const data = localStorage.getItem(key);
+      return data ? JSON.parse(data) : def;
+    }
+    function setDB(key, val) {
+      localStorage.setItem(key, JSON.stringify(val));
+    }
+
+    // नेव्हिगेशन
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      const sc = document.getElementById(id);
+      if(sc) { sc.classList.add('active'); window.scrollTo(0,0); }
+    }
+
+    // -----------------------------------------------------------
+    // १. विभाग १: वीट सप्लाय
+    // -----------------------------------------------------------
+    let supplies = getDB('bb_supplies', []);
+    function toggleSupType() {
+      const t = document.getElementById('sup_type').value;
+      document.getElementById('sup_qty_box').style.display = (t === 'भुगा' || t === 'खंगरी ढेपड') ? 'none' : 'block';
+      calcSupAmt();
+    }
+    function calcSupAmt() {
+      const t = document.getElementById('sup_type').value;
+      const rate = parseFloat(document.getElementById('sup_rate').value) || 0;
+      if (t === 'भुगा' || t === 'खंगरी ढेपड') {
+        document.getElementById('sup_amt').value = rate > 0 ? '₹ ' + rate : '';
+      } else {
+        const qty = parseFloat(document.getElementById('sup_qty').value) || 0;
+        document.getElementById('sup_amt').value = (qty > 0 && rate > 0) ? '₹ ' + ((qty * rate) / 1000).toLocaleString('en-IN') : '';
+      }
+    }
+    function saveSupply() {
+      const btn = document.getElementById('btnSupSave');
+      btn.innerText = "नोंद सेव्ह होत आहे...";
+      const editId = document.getElementById('sup_id').value;
+      const t = document.getElementById('sup_type').value;
+      const rate = parseFloat(document.getElementById('sup_rate').value) || 0;
+      const qty = (t === 'भुगा' || t === 'खंगरी ढेपड') ? 1 : (parseFloat(document.getElementById('sup_qty').value) || 0);
+      const amt = (t === 'भुगा' || t === 'खंगरी ढेपड') ? rate : ((qty * rate) / 1000);
+
+      const record = {
+        id: editId ? parseInt(editId) : Date.now(),
+        date: document.getElementById('sup_date').value,
+        type: t, qty: qty, rate: rate, amt: amt,
+        owner: document.getElementById('sup_owner').value.trim() || 'ग्राहक',
+        mobile: document.getElementById('sup_mob').value.trim(),
+        village: document.getElementById('sup_village').value.trim(),
+        diesel: parseFloat(document.getElementById('sup_diesel').value) || 0,
+        l1: document.getElementById('sup_l1').value.trim(), l2: document.getElementById('sup_l2').value.trim(),
+        l3: document.getElementById('sup_l3').value.trim(), l4: document.getElementById('sup_l4').value.trim(),
+        l5: document.getElementById('sup_l5').value.trim(), l6: document.getElementById('sup_l6').value.trim()
+      };
+
+      setTimeout(() => {
+        if(editId) {
+          const idx = supplies.findIndex(x => x.id === parseInt(editId));
+          if(idx !== -1) supplies[idx] = record;
+        } else { supplies.push(record); }
+        setDB('bb_supplies', supplies);
+        btn.innerText = "💾 सेव्ह करा";
+        document.getElementById('sup_msg').style.display = 'block';
+        setTimeout(() => { document.getElementById('sup_msg').style.display = 'none'; resetSup(); }, 1200);
+      }, 300);
+    }
+    function resetSup() {
+      document.getElementById('supForm').reset();
+      document.getElementById('sup_id').value = '';
+      document.getElementById('sup_date').value = '2026-10-15';
+      document.getElementById('sup_amt').value = '';
+      toggleSupType();
+    }
+    function renderSupList() {
+      const c = document.getElementById('sup_list_container');
+      const q = document.getElementById('sup_search').value.toLowerCase().trim();
+      c.innerHTML = '';
+      const grouped = {};
+      supplies.forEach(s => {
+        if(!grouped[s.owner]) grouped[s.owner] = [];
+        grouped[s.owner].push(s);
+      });
+      Object.keys(grouped).forEach(owner => {
+        const list = grouped[owner];
+        const f = list[0];
+        if(q && !f.owner.toLowerCase().includes(q) && !f.village.toLowerCase().includes(q) && !f.type.toLowerCase().includes(q)) return;
+        const totQty = list.reduce((s, x) => s + (x.qty || 0), 0);
+        const card = document.createElement('div');
+        card.className = 'form-card';
+        card.innerHTML = `
+          <div style="font-weight:bold; font-size:1.1rem; color:var(--primary-dark);">👤 ${f.owner}</div>
+          <div style="font-size:0.85rem; color:#666; margin-top:2px;">📍 गाव: ${f.village || '-'} | 🧱 प्रकार: ${f.type}</div>
+          <div style="font-size:0.9rem; margin-top:4px;">खेपा: <strong>${list.length}</strong> | प्रमाण: <strong>${totQty.toLocaleString('en-IN')}</strong></div>
+          <button class="btn btn-secondary btn-sm" style="width:100%; margin-top:10px;" onclick="openSupDetail('${f.owner}')">📄 सर्व नोंद (${list.length} खेपा)</button>
+        `;
+        c.appendChild(card);
+      });
+    }
+    function openSupDetail(owner) {
+      document.getElementById('sup_detail_title').innerText = owner + ' यांच्या खेपा';
+      const c = document.getElementById('sup_detail_rows'); c.innerHTML = '';
+      supplies.filter(s => s.owner === owner).forEach(s => {
+        const row = document.createElement('div');
+        row.className = 'list-row';
+        row.innerHTML = `
+          <div style="display:flex; justify-content:space-between; font-weight:bold;"><span>📅 ${s.date}</span><span style="color:var(--primary);">₹ ${s.amt.toLocaleString('en-IN')}</span></div>
+          <div style="font-size:0.85rem; color:#444; margin-top:2px;">प्रकार: ${s.type} | प्रमाण: ${s.qty} | रेट: ₹ ${s.rate} | डिझेल: ₹ ${s.diesel}</div>
+          <div style="font-size:0.8rem; color:#666;">लेबर: ${[s.l1,s.l2,s.l3,s.l4,s.l5,s.l6].filter(Boolean).join(', ') || '-'}</div>
+          <div style="display:flex; gap:6px; margin-top:6px;">
+            <button class="btn btn-primary btn-sm" onclick="editSup(${s.id})">✏️ Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="delSup(${s.id}, '${owner}')">🗑️ Delete</button>
+          </div>
+        `;
+        c.appendChild(row);
+      });
+      showScreen('screen-sup-detail');
+    }
+    function editSup(id) {
+      const s = supplies.find(x => x.id === id); if(!s) return;
+      document.getElementById('sup_id').value = s.id;
+      document.getElementById('sup_date').value = s.date;
+      document.getElementById('sup_type').value = s.type;
+      document.getElementById('sup_qty').value = s.qty;
+      document.getElementById('sup_rate').value = s.rate;
+      document.getElementById('sup_owner').value = s.owner;
+      document.getElementById('sup_mob').value = s.mobile;
+      document.getElementById('sup_village').value = s.village;
+      document.getElementById('sup_diesel').value = s.diesel;
+      ['l1','l2','l3','l4','l5','l6'].forEach(k => document.getElementById('sup_' + k).value = s[k] || '');
+      toggleSupType();
+      showScreen('screen-sup-new');
+    }
+    function delSup(id, owner) {
+      if(confirm('नोंद हटवायची आहे का?')) {
+        supplies = supplies.filter(x => x.id !== id);
+        setDB('bb_supplies', supplies);
+        openSupDetail(owner);
+      }
+    }
+    function calcSupSummary() {
+      const f = document.getElementById('ss_from').value, t = document.getElementById('ss_to').value;
+      const list = supplies.filter(s => s.date >= f && s.date <= t);
+      let bricks = 0, trolley = 0, amt = 0, diesel = 0;
+      list.forEach(s => {
+        if(s.type === 'भुगा' || s.type === 'खंगरी ढेपड') trolley += s.qty; else bricks += s.qty;
+        amt += s.amt; diesel += s.diesel;
+      });
+      document.getElementById('ss_trips').innerText = list.length + ' खेपा';
+      document.getElementById('ss_bricks').innerText = bricks.toLocaleString('en-IN') + ' नग';
+      document.getElementById('ss_trolley').innerText = trolley + ' ट्रॉली';
+      document.getElementById('ss_amt').innerText = '₹ ' + amt.toLocaleString('en-IN');
+      document.getElementById('ss_diesel').innerText = '₹ ' + diesel.toLocaleString('en-IN');
+      document.getElementById('ss_net').innerText = '₹ ' + (amt - diesel).toLocaleString('en-IN');
+    }
+    function initLabourScreen() {
+      const sel = document.getElementById('slab_name'); sel.innerHTML = '';
+      const set = new Set();
+      supplies.forEach(s => ['l1','l2','l3','l4','l5','l6'].forEach(k => { if(s[k]) set.add(s[k]); }));
+      if(set.size === 0) ['रमेश','सुरेश','ज्ञानेश्वर'].forEach(n => set.add(n));
+      set.forEach(n => { const opt = document.createElement('option'); opt.value = n; opt.innerText = n; sel.appendChild(opt); });
+      calcLabourReport();
+    }
+    function calcLabourReport() {
+      const name = document.getElementById('slab_name').value;
+      const f = document.getElementById('slab_from').value, t = document.getElementById('slab_to').value;
+      const c = document.getElementById('slab_result_box'); c.innerHTML = '';
+      const list = supplies.filter(s => s.date >= f && s.date <= t && [s.l1,s.l2,s.l3,s.l4,s.l5,s.l6].includes(name));
+      c.innerHTML = `<div style="font-weight:bold; color:var(--primary); margin-bottom:8px;">${name} यांचा हिशोब (एकूण: ${list.length} खेपा)</div>`;
+      if(list.length === 0) { c.innerHTML += `<div style="color:#888; font-size:0.85rem;">निवडलेल्या तारखांमध्ये खेपा नाहीत.</div>`; return; }
+      list.forEach(s => {
+        c.innerHTML += `<div style="font-size:0.85rem; border-bottom:1px dashed #ddd; padding:4px 0;">📅 ${s.date}: ${s.owner} (${s.village}) - ${s.type} (${s.qty} नग)</div>`;
+      });
+    }
+
+    // -----------------------------------------------------------
+    // २. विभाग २: ग्राहक विभाग
+    // -----------------------------------------------------------
+    let customers = getDB('bb_customers', []);
+    function calcCustNew() {
+      const t = document.getElementById('cn_type').value;
+      const qty = parseFloat(document.getElementById('cn_qty').value) || 0;
+      const rate = parseFloat(document.getElementById('cn_rate').value) || 0;
+      const paid = parseFloat(document.getElementById('cn_paid').value) || 0;
+      const tot = (t === 'भुगा' || t === 'खंगरी ढेपड') ? (rate * qty) : ((qty * rate) / 1000);
+      document.getElementById('cn_tot').value = tot > 0 ? '₹ ' + tot.toLocaleString('en-IN') : '';
+      document.getElementById('cn_bal').value = tot > 0 ? '₹ ' + (tot - paid).toLocaleString('en-IN') : '';
+    }
+    function saveCustNew() {
+      const btn = document.getElementById('btnCustSave');
+      btn.innerText = "नोंद सेव्ह होत आहे...";
+      const name = document.getElementById('cn_name').value.trim() || 'नवीन ग्राहक';
+      const t = document.getElementById('cn_type').value;
+      const qty = parseFloat(document.getElementById('cn_qty').value) || 0;
+      const rate = parseFloat(document.getElementById('cn_rate').value) || 0;
+      const paid = parseFloat(document.getElementById('cn_paid').value) || 0;
+      const tot = (t === 'भुगा' || t === 'खंगरी ढेपड') ? (rate * qty) : ((qty * rate) / 1000);
+
+      let cust = customers.find(c => c.name.toLowerCase() === name.toLowerCase());
+      if(!cust) {
+        cust = { id: Date.now(), name: name, mob: document.getElementById('cn_mob').value, addr: document.getElementById('cn_addr').value, entries: [] };
+        customers.push(cust);
+      }
+      cust.entries.push({ id: Date.now(), date: document.getElementById('cn_date').value, rate: rate, total: tot, paid: paid, bal: (tot - paid), note: t + ' खरेदी' });
+
+      setTimeout(() => {
+        setDB('bb_customers', customers);
+        btn.innerText = "💾 नोंद सेव्ह करा";
+        document.getElementById('cn_msg').style.display = 'block';
+        setTimeout(() => { document.getElementById('cn_msg').style.display = 'none'; resetCustNew(); }, 1200);
+      }, 300);
+    }
+    function resetCustNew() {
+      document.getElementById('custForm').reset();
+      document.getElementById('cn_date').value = '2026-10-15';
+      document.getElementById('cn_tot').value = ''; document.getElementById('cn_bal').value = '';
+    }
+    function suggestCust(val) {
+      const b = document.getElementById('cb_sug'); b.innerHTML = '';
+      if(!val) { b.style.display = 'none'; return; }
+      const match = customers.filter(c => c.name.toLowerCase().includes(val.toLowerCase()));
+      if(match.length > 0) {
+        b.style.display = 'block';
+        match.forEach(c => {
+          const lastBal = c.entries.length > 0 ? c.entries[c.entries.length - 1].bal : 0;
+          const d = document.createElement('div'); d.className = 'suggestion-item';
+          d.innerText = `${c.name} - बाकी: ₹${lastBal.toLocaleString('en-IN')}`;
+          d.onclick = () => {
+            document.getElementById('cb_name').value = c.name;
+            document.getElementById('cb_old_bal').value = '₹ ' + lastBal.toLocaleString('en-IN');
+            b.style.display = 'none';
+          };
+          b.appendChild(d);
+        });
+      } else { b.style.display = 'none'; }
+    }
+    function saveCustBal() {
+      const btn = document.getElementById('btnCbSave');
+      btn.innerText = "नोंद सेव्ह होत आहे...";
+      const name = document.getElementById('cb_name').value.trim();
+      const paid = parseFloat(document.getElementById('cb_paid').value) || 0;
+      const cust = customers.find(c => c.name.toLowerCase() === name.toLowerCase());
+      if(cust) {
+        const lastBal = cust.entries.length > 0 ? cust.entries[cust.entries.length - 1].bal : 0;
+        cust.entries.push({ id: Date.now(), date: document.getElementById('cb_date').value, rate: 0, total: 0, paid: paid, bal: (lastBal - paid), note: document.getElementById('cb_note').value || 'बाकी जमा' });
+        setDB('bb_customers', customers);
+      }
+      setTimeout(() => {
+        btn.innerText = "💾 जमा सेव्ह करा";
+        document.getElementById('cb_msg').style.display = 'block';
+        setTimeout(() => { document.getElementById('cb_msg').style.display = 'none'; resetCustBal(); }, 1200);
+      }, 300);
+    }
+    function resetCustBal() {
+      document.getElementById('cb_name').value = ''; document.getElementById('cb_old_bal').value = '';
+      document.getElementById('cb_paid').value = ''; document.getElementById('cb_note').value = '';
+    }
+    function renderCustMain() {
+      const c = document.getElementById('cust_card_container');
+      const q = document.getElementById('cust_search').value.toLowerCase().trim();
+      c.innerHTML = '';
+      customers.forEach(cust => {
+        if(q && !cust.name.toLowerCase().includes(q)) return;
+        const tot = cust.entries.reduce((s, x) => s + x.total, 0);
+        const bal = cust.entries.length > 0 ? cust.entries[cust.entries.length - 1].bal : 0;
+        const card = document.createElement('div'); card.className = 'form-card';
+        card.innerHTML = `
+          <div style="font-weight:bold; font-size:1.1rem; color:var(--primary-dark);">👤 ${cust.name}</div>
+          <div style="font-size:0.9rem; margin-top:4px;">मालाची रक्कम: <strong>₹ ${tot.toLocaleString('en-IN')}</strong> | बाकी: <strong style="color:var(--primary);">₹ ${bal.toLocaleString('en-IN')}</strong></div>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:10px;" onclick="openCustDetail(${cust.id})">📄 पूर्ण हिशोब</button>
+        `;
+        c.appendChild(card);
+      });
+    }
+    function openCustDetail(id) {
+      const cust = customers.find(c => c.id === id); if(!cust) return;
+      document.getElementById('cdet_name').innerText = cust.name;
+      document.getElementById('cdet_sub').innerText = `${cust.addr || '-'} | ${cust.mob || '-'}`;
+      const c = document.getElementById('cdet_rows'); c.innerHTML = '';
+      cust.entries.forEach(e => {
+        const row = document.createElement('div'); row.className = 'list-row';
+        row.innerHTML = `
+          <div style="display:flex; justify-content:space-between; font-weight:bold;"><span>📅 ${e.date}</span><span style="color:var(--primary);">${e.rate > 0 ? 'दर: ₹' + e.rate : ''}</span></div>
+          <div style="font-size:0.88rem; margin-top:4px;">किंमत: <strong>${e.total > 0 ? '₹ ' + e.total.toLocaleString('en-IN') : '-'}</strong> | जमा: <strong>₹ ${e.paid.toLocaleString('en-IN')}</strong> | बाकी: <strong style="color:var(--primary);">₹ ${e.bal.toLocaleString('en-IN')}</strong></div>
+          <div style="font-size:0.8rem; color:#666;">📝 ${e.note || '-'}</div>
+          <div style="display:flex; gap:6px; margin-top:6px;">
+            <button class="btn btn-primary btn-sm" onclick="editCustEntry(${cust.id}, ${e.id})">✏️ Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="delCustEntry(${cust.id}, ${e.id})">🗑️ Delete</button>
+          </div>
+        `;
+        c.appendChild(row);
+      });
+      showScreen('screen-cust-full');
+    }
+    function editCustEntry(cid, eid) {
+      const cust = customers.find(c => c.id === cid); const entry = cust.entries.find(e => e.id === eid);
+      const val = prompt('जमा रक्कम बदला:', entry.paid);
+      if(val !== null) {
+        entry.paid = parseFloat(val) || 0;
+        let prev = 0; const idx = cust.entries.indexOf(entry);
+        if(idx > 0) prev = cust.entries[idx - 1].bal;
+        entry.bal = (entry.total > 0 ? entry.total : prev) - entry.paid;
+        setDB('bb_customers', customers);
+        openCustDetail(cid);
+      }
+    }
+    function delCustEntry(cid, eid) {
+      if(confirm('नोंद हटवायची आहे का?')) {
+        const cust = customers.find(c => c.id === cid);
+        cust.entries = cust.entries.filter(e => e.id !== eid);
+        setDB('bb_customers', customers);
+        openCustDetail(cid);
+      }
+    }
+
+    // -----------------------------------------------------------
+    // ३. विभाग ३: आळेकरी विभाग
+    // -----------------------------------------------------------
+    let alekarInfo = getDB('bb_alekar_info', []);
+    let alekarProd = getDB('bb_alekar_prod', []);
+    let alekarMarket = getDB('bb_alekar_market', []);
+
+    function saveAlekarInfo() {
+      const btn = document.getElementById('btnAiSave'); btn.innerText = "नोंद सेव्ह होत आहे...";
+      const editId = document.getElementById('ai_id').value;
+      const rec = {
+        id: editId ? parseInt(editId) : Date.now(), year: '2026', date: document.getElementById('ai_date').value,
+        name: document.getElementById('ai_name').value.trim() || 'आळेकरी', wife: document.getElementById('ai_wife').value.trim(),
+        mob: document.getElementById('ai_mob').value.trim(), addr: document.getElementById('ai_addr').value.trim(),
+        aadhar: document.getElementById('ai_aadhar').value.trim(), waadhar: document.getElementById('ai_waadhar').value.trim()
+      };
+      setTimeout(() => {
+        if(editId) { const i = alekarInfo.findIndex(x => x.id === parseInt(editId)); alekarInfo[i] = rec; }
+        else { alekarInfo.push(rec); }
+        setDB('bb_alekar_info', alekarInfo);
+        btn.innerText = "💾 सेव्ह करा";
+        document.getElementById('ai_msg').style.display = 'block';
+        setTimeout(() => { document.getElementById('ai_msg').style.display = 'none'; resetAi(); }, 1200);
+      }, 300);
+    }
+    function resetAi() { document.getElementById('aiForm').reset(); document.getElementById('ai_id').value = ''; document.getElementById('ai_date').value = '2026-10-15'; }
+    function renderAiList() {
+      const c = document.getElementById('ai_list_container'); c.innerHTML = '';
+      alekarInfo.forEach(a => {
+        const row = document.createElement('div'); row.className = 'list-row';
+        row.innerHTML = `
+          <div style="font-weight:bold; font-size:1.05rem;">👤 ${a.name} (${a.year})</div>
+          <div style="font-size:0.85rem; color:#555;">पत्नी: ${a.wife || '-'} | मोबा: ${a.mob || '-'} | पत्ता: ${a.addr || '-'}</div>
+          <div style="display:flex; gap:6px; margin-top:6px;">
+            <button class="btn btn-primary btn-sm" onclick="editAi(${a.id})">✏️ Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="delAi(${a.id})">🗑️ Delete</button>
+          </div>
+        `;
+        c.appendChild(row);
+      });
+    }
+    function editAi(id) {
+      const a = alekarInfo.find(x => x.id === id); if(!a) return;
+      document.getElementById('ai_id').value = a.id;
+      document.getElementById('ai_name').value = a.name; document.getElementById('ai_wife').value = a.wife;
+      document.getElementById('ai_mob').value = a.mob; document.getElementById('ai_addr').value = a.addr;
+      document.getElementById('ai_aadhar').value = a.aadhar; document.getElementById('ai_waadhar').value = a.waadhar;
+      showScreen('screen-alekar-info');
+    }
+    function delAi(id) {
+      if(confirm('नोंद हटवायची आहे का?')) {
+        alekarInfo = alekarInfo.filter(x => x.id !== id);
+        setDB('bb_alekar_info', alekarInfo);
+        renderAiList();
+      }
+    }
+    function suggestAlekar(val, targetId, boxId, updateBal = false) {
+      const b = document.getElementById(boxId); b.innerHTML = '';
+      if(!val) { b.style.display = 'none'; return; }
+      const match = alekarInfo.filter(a => a.name.toLowerCase().includes(val.toLowerCase()));
+      if(match.length > 0) {
+        b.style.display = 'block';
+        match.forEach(a => {
+          const d = document.createElement('div'); d.className = 'suggestion-item'; d.innerText = a.name;
+          d.onclick = () => {
+            document.getElementById(targetId).value = a.name;
+            b.style.display = 'none';
+            if(updateBal) loadAlekarBal(a.name);
+          };
+          b.appendChild(d);
+        });
+      } else { b.style.display = 'none'; }
+    }
+    function loadAlekarBal(name) {
+      const earn = alekarProd.filter(p => p.name === name).reduce((s, x) => s + x.amt, 0);
+      const paid = alekarMarket.filter(m => m.name === name).reduce((s, x) => s + x.paid, 0);
+      const bal = earn - paid;
+      const f = document.getElementById('am_bal');
+      if(bal < 0) { f.value = `₹ ${Math.abs(bal).toLocaleString('en-IN')} (येणे - आळेकऱ्याकडे बाकी)`; f.className = 'bal-red'; }
+      else { f.value = `₹ ${bal.toLocaleString('en-IN')} (देणे - आळेकऱ्याला देणे बाकी)`; f.className = 'bal-green'; }
+    }
+    function calcAp() {
+      const u = parseFloat(document.getElementById('ap_unit').value) || 0;
+      const r = parseFloat(document.getElementById('ap_rate').value) || 0;
+      const bricks = u * 20; const tot = (bricks * r) / 1000;
+      document.getElementById('ap_tot').value = tot > 0 ? `₹ ${tot.toLocaleString('en-IN')} (${bricks} वीट)` : '';
+    }
+    function saveAp() {
+      const btn = document.getElementById('btnApSave'); btn.innerText = "नोंद सेव्ह होत आहे...";
+      const u = parseFloat(document.getElementById('ap_unit').value) || 0;
+      const r = parseFloat(document.getElementById('ap_rate').value) || 0;
+      const bricks = u * 20; const tot = (bricks * r) / 1000;
+      alekarProd.push({ id: Date.now(), year: '2026', date: document.getElementById('ap_date').value, name: document.getElementById('ap_name').value.trim() || 'आळेकरी', unit: u, bricks: bricks, rate: r, amt: tot });
+      setTimeout(() => {
+        setDB('bb_alekar_prod', alekarProd);
+        btn.innerText = "💾 मालाची नोंद सेव्ह करा";
+        document.getElementById('ap_msg').style.display = 'block';
+        setTimeout(() => { document.getElementById('ap_msg').style.display = 'none'; resetAp(); }, 1200);
+      }, 300);
+    }
+    function resetAp() {
+      document.getElementById('ap_name').value = ''; document.getElementById('ap_unit').value = '';
+      document.getElementById('ap_rate').value = ''; document.getElementById('ap_tot').value = '';
+    }
+    function saveAm() {
+      const btn = document.getElementById('btnAmSave'); btn.innerText = "नोंद सेव्ह होत आहे...";
+      alekarMarket.push({ id: Date.now(), year: '2026', date: document.getElementById('am_date').value, name: document.getElementById('am_name').value.trim() || 'आळेकरी', paid: parseFloat(document.getElementById('am_paid').value) || 0, reason: document.getElementById('am_reason').value.trim() });
+      setTimeout(() => {
+        setDB('bb_alekar_market', alekarMarket);
+        btn.innerText = "💾 नोंद सेव्ह करा";
+        document.getElementById('am_msg').style.display = 'block';
+        setTimeout(() => { document.getElementById('am_msg').style.display = 'none'; resetAm(); }, 1200);
+      }, 300);
+    }
+    function resetAm() {
+      document.getElementById('am_name').value = ''; document.getElementById('am_paid').value = '';
+      document.getElementById('am_reason').value = ''; document.getElementById('am_bal').value = '';
+    }
+    function renderAlekarTotal() {
+      const c = document.getElementById('at_cards_container'); const q = document.getElementById('at_search').value.toLowerCase().trim();
+      c.innerHTML = '';
+      alekarInfo.forEach(a => {
+        if(q && !a.name.toLowerCase().includes(q) && !a.year.includes(q)) return;
+        const prods = alekarProd.filter(p => p.name === a.name && p.year === a.year);
+        const marks = alekarMarket.filter(m => m.name === a.name && m.year === a.year);
+        const totBricks = prods.reduce((s, x) => s + x.bricks, 0);
+        const totEarn = prods.reduce((s, x) => s + x.amt, 0);
+        const totPaid = marks.reduce((s, x) => s + x.paid, 0);
+        const bal = totEarn - totPaid;
+        const card = document.createElement('div'); card.className = 'form-card';
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.1rem; color:var(--primary-dark);"><span>👤 ${a.name}</span><span style="font-size:0.85rem; color:#666;">वर्ष: ${a.year}</span></div>
+          <div style="font-size:0.88rem; margin-top:4px;">वीट: <strong>${totBricks.toLocaleString('en-IN')}</strong> | माल पैसे: <strong>₹ ${totEarn.toLocaleString('en-IN')}</strong> | उचल: <strong>₹ ${totPaid.toLocaleString('en-IN')}</strong></div>
+          <div style="margin-top:2px;">बाकी: <span class="${bal < 0 ? 'bal-red' : 'bal-green'}">${bal < 0 ? '₹ ' + Math.abs(bal).toLocaleString('en-IN') + ' (येणे)' : '₹ ' + bal.toLocaleString('en-IN') + ' (देणे)'}</span></div>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:10px;" onclick="openAlekarDetail('${a.name}', '${a.year}')">📊 हिशोब सविस्तर</button>
+        `;
+        c.appendChild(card);
+      });
+    }
+    function openAlekarDetail(name, year) {
+      document.getElementById('atd_title').innerText = `${name} (${year})`;
+      const prods = alekarProd.filter(p => p.name === name && p.year === year);
+      const marks = alekarMarket.filter(m => m.name === name && m.year === year);
+      const totBricks = prods.reduce((s, x) => s + x.bricks, 0);
+      const totEarn = prods.reduce((s, x) => s + x.amt, 0);
+      document.getElementById('atd_sub').innerText = `एकूण वीट: ${totBricks.toLocaleString('en-IN')} नग | एकूण माल पैसे: ₹ ${totEarn.toLocaleString('en-IN')}`;
+
+      const cp = document.getElementById('atd_prod_rows'); cp.innerHTML = '';
+      prods.forEach(p => {
+        const r = document.createElement('div'); r.className = 'list-row';
+        r.innerHTML = `<div style="display:flex; justify-content:space-between; font-weight:bold;"><span>📅 ${p.date}</span><span>₹ ${p.amt.toLocaleString('en-IN')}</span></div><div style="font-size:0.85rem;">उचललेली वीट: ${p.unit} (${p.bricks} नग) | दर: ₹ ${p.rate}</div>`;
+        cp.appendChild(r);
+      });
+
+      const cm = document.getElementById('atd_market_rows'); cm.innerHTML = '';
+      marks.forEach(m => {
+        const r = document.createElement('div'); r.className = 'list-row';
+        r.innerHTML = `<div style="display:flex; justify-content:space-between; font-weight:bold;"><span>📅 ${m.date}</span><span style="color:var(--danger);">₹ ${m.paid.toLocaleString('en-IN')}</span></div><div style="font-size:0.85rem;">कारण: ${m.reason || '-'}</div>`;
+        cm.appendChild(r);
+      });
+      showScreen('screen-alekar-detail');
+    }
+    function renderAlekarDateRange() {
+      const f = document.getElementById('ar_from').value, t = document.getElementById('ar_to').value;
+      const c = document.getElementById('ar_results'); c.innerHTML = '';
+      alekarInfo.forEach(a => {
+        const prods = alekarProd.filter(p => p.name === a.name && p.date >= f && p.date <= t);
+        const marks = alekarMarket.filter(m => m.name === a.name && m.date >= f && m.date <= t);
+        if(prods.length === 0 && marks.length === 0) return;
+        const totBricks = prods.reduce((s, x) => s + x.bricks, 0);
+        const totEarn = prods.reduce((s, x) => s + x.amt, 0);
+        const totPaid = marks.reduce((s, x) => s + x.paid, 0);
+        const bal = totEarn - totPaid;
+        const row = document.createElement('div'); row.className = 'list-row';
+        row.innerHTML = `
+          <div style="font-weight:bold; font-size:1.05rem;">👤 ${a.name}</div>
+          <div style="font-size:0.88rem;">विटा: <strong>${totBricks}</strong> | माल पैसे: <strong>₹ ${totEarn}</strong> | उचल: <strong>₹ ${totPaid}</strong></div>
+          <div>नेट हिशोब: <span class="${bal < 0 ? 'bal-red' : 'bal-green'}">${bal < 0 ? '₹ ' + Math.abs(bal) + ' (येणे)' : '₹ ' + bal + ' (देणे)'}</span></div>
+        `;
+        c.appendChild(row);
+      });
+    }
+
+    // -----------------------------------------------------------
+    // ४. विभाग ४: कच्चा माल वाहतूक
+    // -----------------------------------------------------------
+    let transports = getDB('bb_transports', []);
+    let dailyWages = getDB('bb_daily_wages', []);
+
+    function suggestTrName(val) {
+      const b = document.getElementById('tr_sug'); b.innerHTML = '';
+      if(!val) { b.style.display = 'none'; return; }
+      const names = Array.from(new Set(transports.map(t => t.name)));
+      const match = names.filter(n => n.toLowerCase().includes(val.toLowerCase()));
+      if(match.length > 0) {
+        b.style.display = 'block';
+        match.forEach(n => {
+          const d = document.createElement('div'); d.className = 'suggestion-item'; d.innerText = n;
+          d.onclick = () => { document.getElementById('tr_name').value = n; b.style.display = 'none'; };
+          b.appendChild(d);
+        });
+      } else { b.style.display = 'none'; }
+    }
+    function calcTr() {
+      const u = parseFloat(document.getElementById('tr_unit').value) || 0;
+      const r = parseFloat(document.getElementById('tr_rate').value) || 0;
+      const bricks = u * 20; const tot = (bricks * r) / 1000;
+      document.getElementById('tr_amt').value = tot > 0 ? `₹ ${tot.toLocaleString('en-IN')} (${bricks} वीट)` : '';
+    }
+    function saveTr() {
+      const btn = document.getElementById('btnTrSave'); btn.innerText = "नोंद सेव्ह होत आहे...";
+      const editId = document.getElementById('tr_id').value;
+      const u = parseFloat(document.getElementById('tr_unit').value) || 0;
+      const r = parseFloat(document.getElementById('tr_rate').value) || 0;
+      const bricks = u * 20; const tot = (bricks * r) / 1000;
+      const rec = {
+        id: editId ? parseInt(editId) : Date.now(), year: '2026', date: document.getElementById('tr_date').value,
+        name: document.getElementById('tr_name').value.trim() || 'वाहतूकदार', bhattiType: document.getElementById('tr_btype').value,
+        bhattiNo: document.getElementById('tr_bno').value, unit: u, bricks: bricks, rate: r, amt: tot
+      };
+      setTimeout(() => {
+        if(editId) { const i = transports.findIndex(x => x.id === parseInt(editId)); transports[i] = rec; }
+        else { transports.push(rec); }
+        setDB('bb_transports', transports);
+        btn.innerText = "💾 नोंद सेव्ह करा";
+        document.getElementById('tr_msg').style.display = 'block';
+        setTimeout(() => { document.getElementById('tr_msg').style.display = 'none'; resetTr(); }, 1200);
+      }, 300);
+    }
+    function resetTr() {
+      document.getElementById('trForm').reset(); document.getElementById('tr_id').value = '';
+      document.getElementById('tr_date').value = '2026-10-15'; document.getElementById('tr_amt').value = '';
+    }
+    function renderTrLedger() {
+      const c = document.getElementById('tr_ledger_cards'); const q = document.getElementById('trl_search').value.toLowerCase().trim();
+      const f = document.getElementById('trl_from').value, t = document.getElementById('trl_to').value;
+      c.innerHTML = '';
+      const list = transports.filter(x => (!f || x.date >= f) && (!t || x.date <= t) && (!q || x.name.toLowerCase().includes(q) || x.year.includes(q)));
+      const grp = {};
+      list.forEach(x => {
+        const k = `${x.name}_${x.year}`;
+        if(!grp[k]) grp[k] = { name: x.name, year: x.year, bricks: 0, amt: 0, count: 0 };
+        grp[k].bricks += x.bricks; grp[k].amt += x.amt; grp[k].count++;
+      });
+      Object.values(grp).forEach(g => {
+        const card = document.createElement('div'); card.className = 'form-card';
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.1rem; color:var(--primary-dark);"><span>👤 ${g.name}</span><span style="font-size:0.85rem; color:#666;">वर्ष: ${g.year}</span></div>
+          <div style="font-size:0.88rem; margin-top:4px;">माल: <strong>${g.bricks.toLocaleString('en-IN')} वीट</strong> | रक्कम: <strong style="color:var(--primary);">₹ ${g.amt.toLocaleString('en-IN')}</strong></div>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:10px;" onclick="openTrDetail('${g.name}', '${g.year}')">📊 हिशोब (${g.count} नोंदी)</button>
+        `;
+        c.appendChild(card);
+      });
+    }
+    function resetTrLedgerFilter() { document.getElementById('trl_search').value = ''; renderTrLedger(); }
+    function openTrDetail(name, year) {
+      document.getElementById('trd_title').innerText = `${name} (${year})`;
+      const f = document.getElementById('trl_from').value, t = document.getElementById('trl_to').value;
+      const list = transports.filter(x => x.name === name && x.year === year && (!f || x.date >= f) && (!t || x.date <= t));
+      const totBricks = list.reduce((s, x) => s + x.bricks, 0); const totAmt = list.reduce((s, x) => s + x.amt, 0);
+      document.getElementById('trd_sub').innerText = `माल: ${totBricks.toLocaleString('en-IN')} वीट | रक्कम: ₹ ${totAmt.toLocaleString('en-IN')}`;
+      const c = document.getElementById('trd_rows'); c.innerHTML = '';
+      list.forEach(x => {
+        const r = document.createElement('div'); r.className = 'list-row';
+        r.innerHTML = `
+          <div style="display:flex; justify-content:space-between; font-weight:bold;"><span>📅 ${x.date} (${x.bhattiNo})</span><span style="color:var(--primary);">₹ ${x.amt.toLocaleString('en-IN')}</span></div>
+          <div style="font-size:0.85rem;">प्रकार: ${x.bhattiType} | वीट: ${x.unit} (${x.bricks} नग) | दर: ₹ ${x.rate}</div>
+          <div style="display:flex; gap:6px; margin-top:6px;">
+            <button class="btn btn-danger btn-sm" onclick="delTr(${x.id}, '${name}', '${year}')">🗑️ Delete</button>
+          </div>
+        `;
+        c.appendChild(r);
+      });
+      showScreen('screen-tr-detail');
+    }
+    function delTr(id, name, year) {
+      if(confirm('नोंद हटवायची आहे का?')) {
+        transports = transports.filter(x => x.id !== id);
+        setDB('bb_transports', transports);
+        openTrDetail(name, year);
+      }
+    }
+    // ४.३ भट्टी टोटल वीट व मजुरी
+    function renderBhattiReport() {
+      const y = document.getElementById('tb_year').value.trim() || '२०२६';
+      const c = document.getElementById('tb_cards_container'); c.innerHTML = '';
+      const list = transports.filter(x => x.year.includes(y) || y.includes(x.year));
+      const bgrp = {};
+      let gBricks = 0, gCost = 0;
+      list.forEach(x => {
+        if(!bgrp[x.bhattiNo]) bgrp[x.bhattiNo] = { bricks: 0, cost: 0 };
+        bgrp[x.bhattiNo].bricks += x.bricks;
+        bgrp[x.bhattiNo].cost += x.amt;
+        gBricks += x.bricks; gCost += x.amt;
+      });
+      document.getElementById('tb_tot_bricks').innerText = gBricks.toLocaleString('en-IN') + ' वीट';
+      document.getElementById('tb_tot_cost').innerText = '₹ ' + gCost.toLocaleString('en-IN');
+      for(let i=1; i<=10; i++) {
+        const bname = `भट्टी ${i}`;
+        if(bgrp[bname]) {
+          const card = document.createElement('div'); card.className = 'list-row';
+          card.innerHTML = `
+            <div style="font-weight:bold; font-size:1.05rem; color:var(--primary-dark);">🔢 ${bname}</div>
+            <div style="font-size:0.9rem; margin-top:3px;">🧱 गेलेला माल: <strong>${bgrp[bname].bricks.toLocaleString('en-IN')} वीट</strong></div>
+            <div style="font-size:0.9rem; margin-top:2px;">💰 वाहतूक मजुरी: <strong style="color:var(--primary);">₹ ${bgrp[bname].cost.toLocaleString('en-IN')}</strong></div>
+          `;
+          c.appendChild(card);
+        }
+      }
+      if(Object.keys(bgrp).length === 0) { c.innerHTML = `<div style="text-align:center; color:#888; padding:15px;">या वर्षात कोणतीही नोंद नाही.</div>`; }
+    }
+    // ४.४ रोजंदारी नोंद व हिशोब
+    function saveDailyWage() {
+      const btn = document.getElementById('btnDwSave'); btn.innerText = "नोंद सेव्ह होत आहे...";
+      const editId = document.getElementById('dw_id').value;
+      const rec = {
+        id: editId ? parseInt(editId) : Date.now(), year: '2026', date: document.getElementById('dw_date').value,
+        name: document.getElementById('dw_name').value.trim() || 'लेबर', shift: document.getElementById('dw_shift').value,
+        amt: parseFloat(document.getElementById('dw_amt').value) || 0, desc: document.getElementById('dw_desc').value.trim()
+      };
+      setTimeout(() => {
+        if(editId) { const i = dailyWages.findIndex(x => x.id === parseInt(editId)); dailyWages[i] = rec; }
+        else { dailyWages.push(rec); }
+        setDB('bb_daily_wages', dailyWages);
+        btn.innerText = "💾 नोंद सेव्ह करा";
+        document.getElementById('dw_msg').style.display = 'block';
+        setTimeout(() => { document.getElementById('dw_msg').style.display = 'none'; resetDailyWage(); }, 1200);
+      }, 300);
+    }
+    function resetDailyWage() {
+      document.getElementById('dailyForm').reset(); document.getElementById('dw_id').value = '';
+      document.getElementById('dw_date').value = '2026-10-15';
+    }
+    function renderDailyLedger() {
+      const c = document.getElementById('dwl_cards_container'); const q = document.getElementById('dwl_search').value.toLowerCase().trim();
+      const f = document.getElementById('dwl_from').value, t = document.getElementById('dwl_to').value;
+      c.innerHTML = '';
+      const list = dailyWages.filter(x => (!f || x.date >= f) && (!t || x.date <= t) && (!q || x.name.toLowerCase().includes(q) || x.year.includes(q)));
+      const grp = {};
+      list.forEach(x => {
+        const k = `${x.name}_${x.year}`;
+        if(!grp[k]) grp[k] = { name: x.name, year: x.year, amt: 0, count: 0 };
+        grp[k].amt += x.amt; grp[k].count++;
+      });
+      Object.values(grp).forEach(g => {
+        const card = document.createElement('div'); card.className = 'form-card';
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.1rem; color:var(--primary-dark);"><span>👤 ${g.name}</span><span style="font-size:0.85rem; color:#666;">वर्ष: ${g.year}</span></div>
+          <div style="font-size:0.88rem; margin-top:4px;">एकूण दिवस: <strong>${g.count}</strong> | एकूण रक्कम: <strong style="color:var(--primary);">₹ ${g.amt.toLocaleString('en-IN')}</strong></div>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:10px;" onclick="openDailyDetail('${g.name}', '${g.year}')">📊 हिशोब बघा</button>
+        `;
+        c.appendChild(card);
+      });
+    }
+    function resetDailyLedgerFilter() { document.getElementById('dwl_search').value = ''; renderDailyLedger(); }
+    function openDailyDetail(name, year) {
+      document.getElementById('dwd_title').innerText = `${name} (${year})`;
+      const f = document.getElementById('dwl_from').value, t = document.getElementById('dwl_to').value;
+      const list = dailyWages.filter(x => x.name === name && x.year === year && (!f || x.date >= f) && (!t || x.date <= t));
+      const tot = list.reduce((s, x) => s + x.amt, 0);
+      document.getElementById('dwd_sub').innerText = `एकूण दिवस: ${list.length} | एकूण रक्कम: ₹ ${tot.toLocaleString('en-IN')}`;
+      const c = document.getElementById('dwd_rows'); c.innerHTML = '';
+      list.forEach(x => {
+        const r = document.createElement('div'); r.className = 'list-row';
+        r.innerHTML = `
+          <div style="display:flex; justify-content:space-between; font-weight:bold;"><span>📅 ${x.date} (${x.shift})</span><span style="color:var(--primary);">₹ ${x.amt.toLocaleString('en-IN')}</span></div>
+          <div style="font-size:0.85rem; color:#555;">काम: ${x.desc || '-'}</div>
+          <div style="display:flex; gap:6px; margin-top:6px;"><button class="btn btn-danger btn-sm" onclick="delDailyWage(${x.id}, '${name}', '${year}')">🗑️ Delete</button></div>
+        `;
+        c.appendChild(r);
+      });
+      showScreen('screen-daily-detail');
+    }
+    function delDailyWage(id, name, year) {
+      if(confirm('नोंद हटवायची आहे का?')) {
+        dailyWages = dailyWages.filter(x => x.id !== id);
+        setDB('bb_daily_wages', dailyWages);
+        openDailyDetail(name, year);
+      }
+    }
+
+    // -----------------------------------------------------------
+    // ५. विभाग ५: मटेरियल (मटेरियल मालक व भट्टी मालक)
+    // -----------------------------------------------------------
+    let matOwnerEntries = getDB('bb_mat_owners', []);
+    let matLabourEntries = getDB('bb_mat_labours', []);
+
+    function toggleMoTransport() {
+      const val = document.querySelector('input[name="mo_transport_mode"]:checked').value;
+      document.getElementById('mo_trans_self').style.display = (val === 'स्व:ता') ? 'block' : 'none';
+      document.getElementById('mo_trans_owner').style.display = (val === 'मालक') ? 'block' : 'none';
+    }
+    function calcMoAmt() {
+      const w = parseFloat(document.getElementById('mo_weight').value) || 0;
+      const r = parseFloat(document.getElementById('mo_rate').value) || 0;
+      const tot = w * r;
+      document.getElementById('mo_tot').value = tot > 0 ? '₹ ' + tot.toLocaleString('en-IN') : '';
+    }
+    function saveMatOwnerEntry() {
+      const btn = document.getElementById('btnMoSave'); btn.innerText = "नोंद सेव्ह होत आहे...";
+      const w = parseFloat(document.getElementById('mo_weight').value) || 0;
+      const r = parseFloat(document.getElementById('mo_rate').value) || 0;
+      const tot = w * r;
+      const paid = parseFloat(document.getElementById('mo_paid').value) || 0;
+      const tmode = document.querySelector('input[name="mo_transport_mode"]:checked').value;
+
+      const rec = {
+        id: Date.now(), year: '2026', date: document.getElementById('mo_date').value,
+        name: document.getElementById('mo_name').value.trim() || 'मटेरियल मालक',
+        mob: document.getElementById('mo_mob').value.trim(), village: document.getElementById('mo_village').value.trim(),
+        mat: document.getElementById('mo_mat').value.trim() || 'मटेरियल', weight: w, rate: r, total: tot, paid: paid, bal: (tot - paid),
+        tmode: tmode,
+        tSelf: { vehicle: document.getElementById('mo_s_vehicle').value, diesel: document.getElementById('mo_s_diesel').value, rent: document.getElementById('mo_s_rent').value, note: document.getElementById('mo_s_note').value },
+        tOwner: { vehicleno: document.getElementById('mo_o_vehicleno').value, rent: document.getElementById('mo_o_rent').value, exp: document.getElementById('mo_o_exp').value }
+      };
+
+      setTimeout(() => {
+        matOwnerEntries.push(rec); setDB('bb_mat_owners', matOwnerEntries);
+        btn.innerText = "💾 नोंद सेव्ह करा";
+        document.getElementById('mo_msg').style.display = 'block';
+        setTimeout(() => { document.getElementById('mo_msg').style.display = 'none'; resetMatOwnerForm(); }, 1200);
+      }, 300);
+    }
+    function resetMatOwnerForm() {
+      document.getElementById('moForm').reset();
+      document.getElementById('mo_date').value = '2026-10-15'; document.getElementById('mo_tot').value = '';
+      toggleMoTransport();
+    }
+    function suggestMatOwner(val) {
+      const b = document.getElementById('mob_sug'); b.innerHTML = '';
+      if(!val) { b.style.display = 'none'; return; }
+      const names = Array.from(new Set(matOwnerEntries.map(x => x.name)));
+      const match = names.filter(n => n.toLowerCase().includes(val.toLowerCase()));
+      if(match.length > 0) {
+        b.style.display = 'block';
+        match.forEach(n => {
+          const d = document.createElement('div'); d.className = 'suggestion-item'; d.innerText = n;
+          d.onclick = () => {
+            document.getElementById('mob_name').value = n; b.style.display = 'none';
+            populateMatDropdown(n);
+          };
+          b.appendChild(d);
+        });
+      } else { b.style.display = 'none'; }
+    }
+    function populateMatDropdown(name) {
+      const sel = document.getElementById('mob_mat_sel'); sel.innerHTML = '<option value="">-- मटेरियल निवडा --</option>';
+      const list = matOwnerEntries.filter(x => x.name === name);
+      const mats = Array.from(new Set(list.map(x => x.mat)));
+      mats.forEach(m => {
+        const opt = document.createElement('option'); opt.value = m; opt.innerText = m; sel.appendChild(opt);
+      });
+      loadMatOwnerBalDetail();
+    }
+    function loadMatOwnerBalDetail() {
+      const name = document.getElementById('mob_name').value.trim();
+      const mat = document.getElementById('mob_mat_sel').value;
+      if(!name) return;
+      const list = matOwnerEntries.filter(x => x.name === name);
+      let totBal = list.reduce((s, x) => s + (x.bal || 0), 0);
+      document.getElementById('mob_tot_bal').value = '₹ ' + totBal.toLocaleString('en-IN');
+      if(mat) {
+        let matBal = list.filter(x => x.mat === mat).reduce((s, x) => s + (x.bal || 0), 0);
+        document.getElementById('mob_mat_bal').value = '₹ ' + matBal.toLocaleString('en-IN');
+      } else { document.getElementById('mob_mat_bal').value = ''; }
+    }
+    function saveMatOwnerBal() {
+      const btn = document.getElementById('btnMobSave'); btn.innerText = "नोंद सेव्ह होत आहे...";
+      const name = document.getElementById('mob_name').value.trim();
+      const mat = document.getElementById('mob_mat_sel').value;
+      const paid = parseFloat(document.getElementById('mob_paid').value) || 0;
+      const rec = {
+        id: Date.now(), year: '2026', date: document.getElementById('mob_date').value,
+        name: name, mat: mat || 'इतर', isPaymentOnly: true, weight: 0, rate: 0, total: 0, paid: paid, bal: -paid
+      };
+      setTimeout(() => {
+        matOwnerEntries.push(rec); setDB('bb_mat_owners', matOwnerEntries);
+        btn.innerText = "💾 नोंद सेव्ह करा";
+        document.getElementById('mob_msg').style.display = 'block';
+        setTimeout(() => { document.getElementById('mob_msg').style.display = 'none'; resetMatOwnerBal(); }, 1200);
+      }, 300);
+    }
+    function resetMatOwnerBal() {
+      document.getElementById('mob_name').value = ''; document.getElementById('mob_mat_sel').innerHTML = '<option value="">आधी मालक निवडा</option>';
+      document.getElementById('mob_mat_bal').value = ''; document.getElementById('mob_tot_bal').value = ''; document.getElementById('mob_paid').value = '';
+    }
+    function renderMatOwnerLedger() {
+      const c = document.getElementById('mol_cards_container'); const q = document.getElementById('mol_search').value.toLowerCase().trim();
+      c.innerHTML = '';
+      const grp = {};
+      matOwnerEntries.forEach(x => {
+        const k = `${x.name}_${x.year}_${x.mat}`;
+        if(!grp[k]) grp[k] = { name: x.name, year: x.year, mat: x.mat, tot: 0, paid: 0, bal: 0, village: x.village || '', mob: x.mob || '' };
+        grp[k].tot += (x.total || 0); grp[k].paid += (x.paid || 0); grp[k].bal += (x.bal || 0);
+      });
+      Object.values(grp).forEach(g => {
+        if(q && !g.name.toLowerCase().includes(q) && !g.year.includes(q) && !g.mat.toLowerCase().includes(q) && !g.village.toLowerCase().includes(q)) return;
+        const card = document.createElement('div'); card.className = 'form-card';
+        card.innerHTML = `
+          <div style="font-weight:bold; font-size:1.1rem; color:var(--primary-dark);">👤 ${g.name} (${g.mat})</div>
+          <div style="font-size:0.85rem; color:#666;">वर्ष: ${g.year} | एकूण रक्कम: <strong>₹ ${g.tot.toLocaleString('en-IN')}</strong></div>
+          <div style="margin-top:2px;">बाकी रक्कम: <strong style="color:var(--primary);">₹ ${g.bal.toLocaleString('en-IN')}</strong></div>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:10px;" onclick="openMatOwnerDetail('${g.name}', '${g.year}', '${g.mat}')">📊 हिशोब</button>
+        `;
+        c.appendChild(card);
+      });
+    }
+    function openMatOwnerDetail(name, year, mat) {
+      document.getElementById('mold_title').innerText = `${name} - ${mat} (${year})`;
+      const list = matOwnerEntries.filter(x => x.name === name && x.year === year && x.mat === mat);
+      const f = list[0] || {};
+      document.getElementById('mold_sub').innerText = `गाव: ${f.village || '-'} | मोबा: ${f.mob || '-'}`;
+      const c = document.getElementById('mold_rows'); c.innerHTML = '';
+      list.forEach(x => {
+        const r = document.createElement('div'); r.className = 'list-row';
+        r.innerHTML = `
+          <div style="display:flex; justify-content:space-between; font-weight:bold;"><span>📅 ${x.date}</span><span>${x.isPaymentOnly ? 'बाकी जमा' : 'खरेदी'}</span></div>
+          <div style="font-size:0.85rem;">वजन: ${x.weight} टन | दर: ₹ ${x.rate} | एकूण: ₹ ${x.total} | जमा: ₹ ${x.paid}</div>
+        `;
+        c.appendChild(r);
+      });
+      showScreen('screen-mat-owner-detail');
+    }
+
+    // ५.२ भट्टी मालक: लेबर नोंद व हिशोब
+    function calcMatLabourSplit() {
+      const tot = parseFloat(document.getElementById('ml_tot_amt').value) || 0;
+      let count = 0;
+      ['l1','l2','l3','l4','l5','l6'].forEach(k => { if(document.getElementById('ml_' + k).value.trim()) count++; });
+      if(tot > 0 && count > 0) {
+        document.getElementById('ml_split_amt').value = `₹ ${(tot / count).toFixed(2)} (${count} मजूर)`;
+      } else { document.getElementById('ml_split_amt').value = ''; }
+    }
+    function saveMatLabourEntry() {
+      const btn = document.getElementById('btnMlSave'); btn.innerText = "नोंद सेव्ह होत आहे...";
+      const tot = parseFloat(document.getElementById('ml_tot_amt').value) || 0;
+      const names = [];
+      ['l1','l2','l3','l4','l5','l6'].forEach(k => {
+        const v = document.getElementById('ml_' + k).value.trim(); if(v) names.push(v);
+      });
+      const rec = {
+        id: Date.now(), year: '2026', date: document.getElementById('ml_date').value,
+        mat: document.getElementById('ml_mat').value.trim() || 'मटेरियल', tot: tot,
+        split: names.length > 0 ? (tot / names.length) : tot, labours: names
+      };
+      setTimeout(() => {
+        matLabourEntries.push(rec); setDB('bb_mat_labours', matLabourEntries);
+        btn.innerText = "💾 नोंद सेव्ह करा";
+        document.getElementById('ml_msg').style.display = 'block';
+        setTimeout(() => { document.getElementById('ml_msg').style.display = 'none'; resetMatLabourForm(); }, 1200);
+      }, 300);
+    }
+    function resetMatLabourForm() {
+      document.getElementById('mlForm').reset();
+      document.getElementById('ml_date').value = '2026-10-15'; document.getElementById('ml_split_amt').value = '';
+    }
+    function renderMatLabourLedger() {
+      const c = document.getElementById('mll_rows_container'); const q = document.getElementById('mll_search').value.toLowerCase().trim();
+      const f = document.getElementById('mll_from').value, t = document.getElementById('mll_to').value;
+      c.innerHTML = '';
+      const list = matLabourEntries.filter(x => (!f || x.date >= f) && (!t || x.date <= t) && (!q || x.mat.toLowerCase().includes(q) || x.year.includes(q)));
+      list.forEach(x => {
+        const r = document.createElement('div'); r.className = 'list-row';
+        r.innerHTML = `
+          <div style="display:flex; justify-content:space-between; font-weight:bold;"><span>📅 ${x.date} (${x.mat})</span><span style="color:var(--primary);">₹ ${x.tot.toLocaleString('en-IN')}</span></div>
+          <div style="font-size:0.85rem; color:#444;">👷 लेबर: ${x.labours.join(', ') || '-'}</div>
+          <div style="font-size:0.85rem;">💵 प्रत्येकी: <strong>₹ ${x.split.toFixed(2)}</strong></div>
+          <div style="display:flex; gap:6px; margin-top:6px;"><button class="btn btn-danger btn-sm" onclick="delMatLabour(${x.id})">🗑️ Delete</button></div>
+        `;
+        c.appendChild(r);
+      });
+    }
+    function resetMatLabourLedgerFilter() { document.getElementById('mll_search').value = ''; renderMatLabourLedger(); }
+    function delMatLabour(id) {
+      if(confirm('नोंद हटवायची आहे का?')) {
+        matLabourEntries = matLabourEntries.filter(x => x.id !== id);
+        setDB('bb_mat_labours', matLabourEntries);
+        renderMatLabourLedger();
+      }
+    }
+
+    // -----------------------------------------------------------
+    // ६. विभाग ६: माती (भट्टी मालक व माती मालक)
+    // -----------------------------------------------------------
+    let soilTransEntries = getDB('bb_soil_trans', []);
+    let soilOwnerEntries = getDB('bb_soil_owners', []);
+
+    function checkSoilTransAutofill() {
+      const date = document.getElementById('st_date').value;
+      const name = document.getElementById('st_name').value.trim();
+      if(!date || !name) return;
+      const match = soilTransEntries.find(x => x.date === date && x.name.toLowerCase() === name.toLowerCase());
+      if(match) {
+        document.getElementById('st_vehicle').value = match.vehicle || '';
+        document.getElementById('st_vehicleno').value = match.vehicleno || '';
+      }
+    }
+    function saveSoilTransEntry() {
+      const btn = document.getElementById('btnStSave'); btn.innerText = "नोंद सेव्ह होत आहे...";
+      const editId = document.getElementById('st_id').value;
+      const rec = {
+        id: editId ? parseInt(editId) : Date.now(), year: '2026', date: document.getElementById('st_date').value,
+        name: document.getElementById('st_name').value.trim() || 'वाहतूकदार', vehicle: document.getElementById('st_vehicle').value.trim(),
+        vehicleno: document.getElementById('st_vehicleno').value.trim(), diesel: parseFloat(document.getElementById('st_diesel').value) || 0,
+        trips: parseFloat(document.getElementById('st_trips').value) || 0
+      };
+      setTimeout(() => {
+        if(editId) { const i = soilTransEntries.findIndex(x => x.id === parseInt(editId)); soilTransEntries[i] = rec; }
+        else { soilTransEntries.push(rec); }
+        setDB('bb_soil_trans', soilTransEntries);
+        btn.innerText = "💾 नोंद सेव्ह करा";
+        document.getElementById('st_msg').style.display = 'block';
+        setTimeout(() => { document.getElementById('st_msg').style.display = 'none'; resetSoilTransForm(); }, 1200);
+      }, 300);
+    }
+    function resetSoilTransForm() {
+      document.getElementById('stForm').reset(); document.getElementById('st_id').value = '';
+      document.getElementById('st_date').value = '2026-10-15';
+    }
+    function renderSoilTransAllRows() {
+      const c = document.getElementById('st_all_rows'); c.innerHTML = '';
+      soilTransEntries.forEach(x => {
+        const r = document.createElement('div'); r.className = 'list-row';
+        r.innerHTML = `
+          <div style="display:flex; justify-content:space-between; font-weight:bold;"><span>📅 ${x.date}</span><span>${x.name}</span></div>
+          <div style="font-size:0.85rem;">🚜 साधन: ${x.vehicle} (${x.vehicleno}) | खेपा: <strong>${x.trips}</strong> | डिझेल: ₹ ${x.diesel}</div>
+          <div style="display:flex; gap:6px; margin-top:6px;"><button class="btn btn-danger btn-sm" onclick="delSoilTrans(${x.id})">🗑️ Delete</button></div>
+        `;
+        c.appendChild(r);
+      });
+    }
+    function delSoilTrans(id) {
+      if(confirm('नोंद हटवायची आहे का?')) {
+        soilTransEntries = soilTransEntries.filter(x => x.id !== id);
+        setDB('bb_soil_trans', soilTransEntries);
+        renderSoilTransAllRows();
+      }
+    }
+    function renderSoilTransLedger() {
+      const c = document.getElementById('stl_cards_container'); const q = document.getElementById('stl_search').value.toLowerCase().trim();
+      c.innerHTML = '';
+      const grp = {};
+      soilTransEntries.forEach(x => {
+        const k = `${x.name}_${x.year}`;
+        if(!grp[k]) grp[k] = { name: x.name, year: x.year, vehicle: x.vehicle, trips: 0, diesel: 0 };
+        grp[k].trips += x.trips; grp[k].diesel += x.diesel;
+      });
+      Object.values(grp).forEach(g => {
+        if(q && !g.name.toLowerCase().includes(q) && !g.year.includes(q)) return;
+        const card = document.createElement('div'); card.className = 'form-card';
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.1rem; color:var(--primary-dark);"><span>👤 ${g.name}</span><span style="font-size:0.85rem; color:#666;">वर्ष: ${g.year}</span></div>
+          <div style="font-size:0.88rem; margin-top:4px;">साधन: ${g.vehicle || '-'} | एकूण खेपा: <strong>${g.trips}</strong></div>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:10px;" onclick="openSoilTransDetail('${g.name}', '${g.year}')">📄 संपूर्ण नोंद व प्रिंट</button>
+        `;
+        c.appendChild(card);
+      });
+    }
+    function openSoilTransDetail(name, year) {
+      document.getElementById('stld_title').innerText = `${name} (${year})`;
+      const list = soilTransEntries.filter(x => x.name === name && x.year === year);
+      const totTrips = list.reduce((s, x) => s + x.trips, 0); const totDiesel = list.reduce((s, x) => s + x.diesel, 0);
+      document.getElementById('stld_sub').innerText = `एकूण खेपा: ${totTrips} | डिझेल खर्च: ₹ ${totDiesel}`;
+      const c = document.getElementById('stld_rows'); c.innerHTML = '';
+      list.forEach(x => {
+        const r = document.createElement('div'); r.className = 'list-row';
+        r.innerHTML = `<div style="display:flex; justify-content:space-between; font-weight:bold;"><span>📅 ${x.date}</span><span>${x.trips} खेपा</span></div><div style="font-size:0.85rem;">${x.vehicle} (${x.vehicleno}) | डिझेल: ₹ ${x.diesel}</div>`;
+        c.appendChild(r);
+      });
+      showScreen('screen-soil-trans-detail');
+    }
+
+    // ६.२ माती मालक (नोंद व बाकी जमा)
+    function toggleSoilOwnerMode() {
+      const mode = document.querySelector('input[name="so_mode"]:checked').value;
+      document.getElementById('so_box_entry').style.display = (mode === 'माती नोंद') ? 'block' : 'none';
+      document.getElementById('so_box_bal').style.display = (mode === 'माती बाकी जमा') ? 'block' : 'none';
+    }
+    function saveSoilOwnerEntry() {
+      const btn = document.getElementById('btnSoeSave'); btn.innerText = "नोंद सेव्ह होत आहे...";
+      const tot = parseFloat(document.getElementById('soe_tot').value) || 0;
+      const paid = parseFloat(document.getElementById('soe_paid').value) || 0;
+      const rec = {
+        id: Date.now(), year: '2026', date: document.getElementById('soe_date').value,
+        name: document.getElementById('soe_name').value.trim() || 'माती मालक', mob: document.getElementById('soe_mob').value.trim(),
+        addr: document.getElementById('soe_addr').value.trim(), rate: parseFloat(document.getElementById('soe_rate').value) || 0,
+        total: tot, paid: paid, bal: (tot - paid), type: '🚜 माती खरेदी'
+      };
+      setTimeout(() => {
+        soilOwnerEntries.push(rec); setDB('bb_soil_owners', soilOwnerEntries);
+        btn.innerText = "💾 नोंद सेव्ह करा";
+        document.getElementById('soe_msg').style.display = 'block';
+        setTimeout(() => { document.getElementById('soe_msg').style.display = 'none'; resetSoilOwnerEntry(); }, 1200);
+      }, 300);
+    }
+    function resetSoilOwnerEntry() { document.getElementById('soFormEntry').reset(); document.getElementById('soe_date').value = '2026-10-15'; }
+    function suggestSoilOwner(val) {
+      const b = document.getElementById('sob_sug'); b.innerHTML = '';
+      if(!val) { b.style.display = 'none'; return; }
+      const names = Array.from(new Set(soilOwnerEntries.map(x => x.name)));
+      const match = names.filter(n => n.toLowerCase().includes(val.toLowerCase()));
+      if(match.length > 0) {
+        b.style.display = 'block';
+        match.forEach(n => {
+          const bal = soilOwnerEntries.filter(x => x.name === n).reduce((s, x) => s + x.bal, 0);
+          const d = document.createElement('div'); d.className = 'suggestion-item'; d.innerText = `${n} - बाकी: ₹${bal}`;
+          d.onclick = () => {
+            document.getElementById('sob_name').value = n;
+            document.getElementById('sob_bal').value = '₹ ' + bal.toLocaleString('en-IN');
+            b.style.display = 'none';
+          };
+          b.appendChild(d);
+        });
+      } else { b.style.display = 'none'; }
+    }
+    function saveSoilOwnerBal() {
+      const btn = document.getElementById('btnSobSave'); btn.innerText = "नोंद सेव्ह होत आहे...";
+      const name = document.getElementById('sob_name').value.trim();
+      const paid = parseFloat(document.getElementById('sob_paid').value) || 0;
+      const rec = {
+        id: Date.now(), year: '2026', date: document.getElementById('sob_date').value,
+        name: name, mob: '', addr: '', rate: 0, total: 0, paid: paid, bal: -paid, type: '💵 माती बाकी जमा', note: document.getElementById('sob_note').value
+      };
+      setTimeout(() => {
+        soilOwnerEntries.push(rec); setDB('bb_soil_owners', soilOwnerEntries);
+        btn.innerText = "💾 नोंद सेव्ह करा";
+        document.getElementById('sob_msg').style.display = 'block';
+        setTimeout(() => { document.getElementById('sob_msg').style.display = 'none'; resetSoilOwnerBal(); }, 1200);
+      }, 300);
+    }
+    function resetSoilOwnerBal() {
+      document.getElementById('soFormBal').reset();
+      document.getElementById('sob_date').value = '2026-10-15'; document.getElementById('sob_bal').value = '';
+    }
+    function renderSoilOwnerLedger() {
+      const c = document.getElementById('sol_cards_container'); const q = document.getElementById('sol_search').value.toLowerCase().trim();
+      c.innerHTML = '';
+      const grp = {};
+      soilOwnerEntries.forEach(x => {
+        const k = `${x.name}_${x.year}`;
+        if(!grp[k]) grp[k] = { name: x.name, year: x.year, tot: 0, paid: 0, bal: 0, addr: x.addr || '', mob: x.mob || '' };
+        grp[k].tot += (x.total || 0); grp[k].paid += (x.paid || 0); grp[k].bal += (x.bal || 0);
+      });
+      Object.values(grp).forEach(g => {
+        if(q && !g.name.toLowerCase().includes(q) && !g.year.includes(q) && !g.addr.toLowerCase().includes(q)) return;
+        const card = document.createElement('div'); card.className = 'form-card';
+        card.innerHTML = `
+          <div style="font-weight:bold; font-size:1.1rem; color:var(--primary-dark);">👤 ${g.name}</div>
+          <div style="font-size:0.85rem; color:#666;">वर्ष: ${g.year} | एकूण: ₹ ${g.tot.toLocaleString('en-IN')} | जमा: ₹ ${g.paid.toLocaleString('en-IN')}</div>
+          <div style="margin-top:2px;">बाकी रक्कम: <strong style="color:var(--primary);">₹ ${g.bal.toLocaleString('en-IN')}</strong></div>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:10px;" onclick="openSoilOwnerDetail('${g.name}', '${g.year}')">📄 पूर्ण हिशोब</button>
+        `;
+        c.appendChild(card);
+      });
+    }
+    function openSoilOwnerDetail(name, year) {
+      document.getElementById('sold_name').innerText = `${name} (${year})`;
+      const list = soilOwnerEntries.filter(x => x.name === name && x.year === year);
+      const f = list[0] || {};
+      document.getElementById('sold_sub').innerText = `${f.mob || '-'} | ${f.addr || '-'}`;
+      const c = document.getElementById('sold_rows'); c.innerHTML = '';
+      list.forEach(x => {
+        const r = document.createElement('div'); r.className = 'list-row';
+        r.innerHTML = `
+          <div style="display:flex; justify-content:space-between; font-weight:bold;"><span>📅 ${x.date}</span><span>${x.type}</span></div>
+          <div style="font-size:0.85rem;">एकूण: ₹ ${x.total} | जमा: ₹ ${x.paid} | बाकी: ₹ ${x.bal}</div>
+          ${x.note ? `<div style="font-size:0.8rem; color:#666;">टीप: ${x.note}</div>` : ''}
+        `;
+        c.appendChild(r);
+      });
+      showScreen('screen-soil-owner-detail');
+    }
+
+    // -----------------------------------------------------------
+    // ७. विभाग ७: रोटा ट्रॅक्टर डिझेल
+    // -----------------------------------------------------------
+    let dieselEntries = getDB('bb_diesels', []);
+    let savedYear = localStorage.getItem('bb_diesel_last_year') || '२०२६-२७';
+    document.getElementById('rd_year').value = savedYear;
+
+    function saveDieselEntry() {
+      const btn = document.getElementById('btnRdSave'); btn.innerText = "नोंद सेव्ह होत आहे...";
+      const yr = document.getElementById('rd_year').value.trim() || '२०२६-२७';
+      localStorage.setItem('bb_diesel_last_year', yr);
+      const rec = {
+        id: Date.now(), year: yr, date: document.getElementById('rd_date').value,
+        amt: parseFloat(document.getElementById('rd_amt').value) || 0,
+        liters: parseFloat(document.getElementById('rd_liters').value) || 0
+      };
+      setTimeout(() => {
+        dieselEntries.push(rec); setDB('bb_diesels', dieselEntries);
+        btn.innerText = "💾 नोंद सेव्ह करा";
+        document.getElementById('rd_msg').style.display = 'block';
+        setTimeout(() => { document.getElementById('rd_msg').style.display = 'none'; resetDieselForm(); }, 1200);
+      }, 300);
+    }
+    function resetDieselForm() {
+      document.getElementById('rd_amt').value = ''; document.getElementById('rd_liters').value = '';
+      document.getElementById('rd_date').value = '2026-10-15';
+    }
+    function renderDieselYearlyList() {
+      const c = document.getElementById('rd_yearly_cards'); c.innerHTML = '';
+      const grp = {};
+      dieselEntries.forEach(x => {
+        if(!grp[x.year]) grp[x.year] = { year: x.year, amt: 0, liters: 0 };
+        grp[x.year].amt += x.amt; grp[x.year].liters += x.liters;
+      });
+      Object.values(grp).forEach(g => {
+        const card = document.createElement('div'); card.className = 'form-card';
+        card.innerHTML = `
+          <div style="font-weight:bold; font-size:1.1rem; color:var(--primary-dark);">📅 वर्ष: ${g.year}</div>
+          <div style="font-size:0.9rem; margin-top:4px;">एकूण डिझेल: <strong>${g.liters.toFixed(2)} लिटर</strong> | रक्कम: <strong style="color:var(--primary);">₹ ${g.amt.toLocaleString('en-IN')}</strong></div>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:10px;" onclick="openDieselDetail('${g.year}')">📊 पूर्ण हिशोब बघा</button>
+        `;
+        c.appendChild(card);
+      });
+    }
+    function openDieselDetail(yr) {
+      document.getElementById('rdd_title').innerText = `वर्ष: ${yr}`;
+      const list = dieselEntries.filter(x => x.year === yr);
+      const totAmt = list.reduce((s, x) => s + x.amt, 0); const totL = list.reduce((s, x) => s + x.liters, 0);
+      document.getElementById('rdd_sub').innerText = `एकूण: ${totL.toFixed(2)} लिटर | एकूण रक्कम: ₹ ${totAmt.toLocaleString('en-IN')}`;
+      const c = document.getElementById('rdd_rows'); c.innerHTML = '';
+      list.forEach(x => {
+        const r = document.createElement('div'); r.className = 'list-row';
+        r.innerHTML = `<div style="display:flex; justify-content:space-between; font-weight:bold;"><span>📅 ${x.date}</span><span style="color:var(--primary);">₹ ${x.amt.toLocaleString('en-IN')}</span></div><div style="font-size:0.85rem;">डिझेल: ${x.liters} लिटर</div>`;
+        c.appendChild(r);
+      });
+      showScreen('screen-diesel-detail');
+    }
+
+    // -----------------------------------------------------------
+    // ८. विभाग ८: इतर खर्च
+    // -----------------------------------------------------------
+    let expenses = getDB('bb_expenses', []);
+    function saveExpenseEntry() {
+      const btn = document.getElementById('btnExSave'); btn.innerText = "नोंद सेव्ह होत आहे...";
+      const d = document.getElementById('ex_date').value;
+      const yr = d.split('-')[0] || '2026';
+      const rec = {
+        id: Date.now(), year: yr, date: d, tool: document.getElementById('ex_tool').value.trim(),
+        work: document.getElementById('ex_work').value.trim(), cost: parseFloat(document.getElementById('ex_cost').value) || 0,
+        note: document.getElementById('ex_note').value.trim()
+      };
+      setTimeout(() => {
+        expenses.push(rec); setDB('bb_expenses', expenses);
+        btn.innerText = "💾 नोंद सेव्ह करा";
+        document.getElementById('ex_msg').style.display = 'block';
+        setTimeout(() => { document.getElementById('ex_msg').style.display = 'none'; resetExpenseForm(); }, 1200);
+      }, 300);
+    }
+    function resetExpenseForm() {
+      document.getElementById('expForm').reset(); document.getElementById('ex_date').value = '2026-10-15';
+    }
+    function renderExpenseYearlyList() {
+      const c = document.getElementById('ex_yearly_cards'); c.innerHTML = '';
+      const grp = {};
+      expenses.forEach(x => {
+        if(!grp[x.year]) grp[x.year] = { year: x.year, cost: 0, count: 0 };
+        grp[x.year].cost += x.cost; grp[x.year].count++;
+      });
+      Object.values(grp).forEach(g => {
+        const card = document.createElement('div'); card.className = 'form-card';
+        card.innerHTML = `
+          <div style="font-weight:bold; font-size:1.1rem; color:var(--primary-dark);">📅 वर्ष: ${g.year}</div>
+          <div style="font-size:0.9rem; margin-top:4px;">एकूण खर्च: <strong style="color:var(--primary);">₹ ${g.cost.toLocaleString('en-IN')}</strong> | नोंदी: <strong>${g.count}</strong></div>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:10px;" onclick="openExpenseDetail('${g.year}')">👁️ सर्व नोंदी बघा</button>
+        `;
+        c.appendChild(card);
+      });
+    }
+    let currentExpYear = '2026';
+    function openExpenseDetail(yr) {
+      currentExpYear = yr;
+      document.getElementById('exd_title').innerText = `वर्ष: ${yr}`;
+      filterExpenseDetail();
+      showScreen('screen-exp-detail');
+    }
+    function filterExpenseDetail() {
+      const q = document.getElementById('exd_search').value.toLowerCase().trim();
+      const list = expenses.filter(x => x.year === currentExpYear && (!q || x.tool.toLowerCase().includes(q) || x.work.toLowerCase().includes(q)));
+      const tot = list.reduce((s, x) => s + x.cost, 0);
+      document.getElementById('exd_sub').innerText = `एकूण खर्च: ₹ ${tot.toLocaleString('en-IN')}`;
+      const c = document.getElementById('exd_rows'); c.innerHTML = '';
+      list.forEach(x => {
+        const r = document.createElement('div'); r.className = 'list-row';
+        r.innerHTML = `
+          <div style="display:flex; justify-content:space-between; font-weight:bold;"><span>📅 ${x.date}</span><span style="color:var(--primary);">₹ ${x.cost.toLocaleString('en-IN')}</span></div>
+          <div style="font-size:0.85rem;">साधन/साहित्य: ${x.tool} | काम: ${x.work}</div>
+          ${x.note ? `<div style="font-size:0.8rem; color:#666;">टीप: ${x.note}</div>` : ''}
+          <div style="display:flex; gap:6px; margin-top:6px;"><button class="btn btn-danger btn-sm" onclick="delExpense(${x.id})">🗑️ Delete</button></div>
+        `;
+        c.appendChild(r);
+      });
+    }
+    function delExpense(id) {
+      if(confirm('नोंद हटवायची आहे का?')) {
+        expenses = expenses.filter(x => x.id !== id);
+        setDB('bb_expenses', expenses);
+        filterExpenseDetail();
+      }
+    }
+
+    // -----------------------------------------------------------
+    // ९. विभाग ९: JCB
+    // -----------------------------------------------------------
+    let jcbEntries = getDB('bb_jcbs', []);
+    function toggleJcbMode() {
+      const m = document.querySelector('input[name="jcb_mode"]:checked').value;
+      document.getElementById('jcb_box_entry').style.display = (m === 'नोंद') ? 'block' : 'none';
+      document.getElementById('jcb_box_bal').style.display = (m === 'बाकी जमा') ? 'block' : 'none';
+    }
+    function saveJcbEntry() {
+      const btn = document.getElementById('btnJcbeSave'); btn.innerText = "नोंद सेव्ह होत आहे...";
+      const tot = parseFloat(document.getElementById('jcbe_tot').value) || 0;
+      const paid = parseFloat(document.getElementById('jcbe_paid').value) || 0;
+      const rec = {
+        id: Date.now(), year: '2026', date: document.getElementById('jcbe_date').value,
+        name: document.getElementById('jcbe_name').value.trim() || 'JCB मालक', mob: document.getElementById('jcbe_mob').value.trim(),
+        time: document.getElementById('jcbe_time').value.trim(), work: document.getElementById('jcbe_work').value.trim(),
+        total: tot, paid: paid, bal: (tot - paid), isPaymentOnly: false
+      };
+      setTimeout(() => {
+        jcbEntries.push(rec); setDB('bb_jcbs', jcbEntries);
+        btn.innerText = "💾 नोंद सेव्ह करा";
+        document.getElementById('jcbe_msg').style.display = 'block';
+        setTimeout(() => { document.getElementById('jcbe_msg').style.display = 'none'; resetJcbEntry(); }, 1200);
+      }, 300);
+    }
+    function resetJcbEntry() { document.getElementById('jcbFormEntry').reset(); document.getElementById('jcbe_date').value = '2026-10-15'; }
+    function suggestJcbOwner(val) {
+      const b = document.getElementById('jcbb_sug'); b.innerHTML = '';
+      if(!val) { b.style.display = 'none'; return; }
+      const names = Array.from(new Set(jcbEntries.map(x => x.name)));
+      const match = names.filter(n => n.toLowerCase().includes(val.toLowerCase()));
+      if(match.length > 0) {
+        b.style.display = 'block';
+        match.forEach(n => {
+          const bal = jcbEntries.filter(x => x.name === n).reduce((s, x) => s + x.bal, 0);
+          const d = document.createElement('div'); d.className = 'suggestion-item'; d.innerText = `${n} - बाकी: ₹${bal}`;
+          d.onclick = () => {
+            document.getElementById('jcbb_name').value = n;
+            document.getElementById('jcbb_bal').value = '₹ ' + bal.toLocaleString('en-IN');
+            b.style.display = 'none';
+          };
+          b.appendChild(d);
+        });
+      } else { b.style.display = 'none'; }
+    }
+    function saveJcbBal() {
+      const btn = document.getElementById('btnJcbbSave'); btn.innerText = "नोंद सेव्ह होत आहे...";
+      const name = document.getElementById('jcbb_name').value.trim();
+      const paid = parseFloat(document.getElementById('jcbb_paid').value) || 0;
+      const rec = {
+        id: Date.now(), year: '2026', date: document.getElementById('jcbb_date').value,
+        name: name, mob: '', time: '-', work: document.getElementById('jcbb_note').value || 'बाकी जमा',
+        total: 0, paid: paid, bal: -paid, isPaymentOnly: true
+      };
+      setTimeout(() => {
+        jcbEntries.push(rec); setDB('bb_jcbs', jcbEntries);
+        btn.innerText = "💾 नोंद सेव्ह करा";
+        document.getElementById('jcbb_msg').style.display = 'block';
+        setTimeout(() => { document.getElementById('jcbb_msg').style.display = 'none'; resetJcbBal(); }, 1200);
+      }, 300);
+    }
+    function resetJcbBal() {
+      document.getElementById('jcbFormBal').reset();
+      document.getElementById('jcbb_date').value = '2026-10-15'; document.getElementById('jcbb_bal').value = '';
+    }
+    function renderJcbLedger() {
+      const c = document.getElementById('jcbl_cards_container'); const q = document.getElementById('jcbl_search').value.toLowerCase().trim();
+      c.innerHTML = '';
+      const grp = {};
+      jcbEntries.forEach(x => {
+        const k = `${x.name}_${x.year}`;
+        if(!grp[k]) grp[k] = { name: x.name, year: x.year, tot: 0, paid: 0, bal: 0, mob: x.mob || '' };
+        grp[k].tot += (x.total || 0); grp[k].paid += (x.paid || 0); grp[k].bal += (x.bal || 0);
+      });
+      Object.values(grp).forEach(g => {
+        if(q && !g.name.toLowerCase().includes(q) && !g.year.includes(q)) return;
+        const card = document.createElement('div'); card.className = 'form-card';
+        card.innerHTML = `
+          <div style="font-weight:bold; font-size:1.1rem; color:var(--primary-dark);">👤 ${g.name}</div>
+          <div style="font-size:0.85rem; color:#666;">वर्ष: ${g.year} | एकूण: ₹ ${g.tot.toLocaleString('en-IN')} | जमा: ₹ ${g.paid.toLocaleString('en-IN')}</div>
+          <div style="margin-top:2px;">बाकी रक्कम: <strong style="color:var(--primary);">₹ ${g.bal.toLocaleString('en-IN')}</strong></div>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:10px;" onclick="openJcbDetail('${g.name}', '${g.year}')">📊 पूर्ण हिशोब बघा</button>
+        `;
+        c.appendChild(card);
+      });
+    }
+    function openJcbDetail(name, year) {
+      document.getElementById('jcbd_name').innerText = `${name} (${year})`;
+      const list = jcbEntries.filter(x => x.name === name && x.year === year);
+      const f = list[0] || {};
+      document.getElementById('jcbd_sub').innerText = `मोबाईल: ${f.mob || '-'}`;
+      const c = document.getElementById('jcbd_rows'); c.innerHTML = '';
+      list.forEach(x => {
+        const r = document.createElement('div'); r.className = 'list-row';
+        r.innerHTML = `
+          <div style="display:flex; justify-content:space-between; font-weight:bold;"><span>📅 ${x.date}</span><span style="color:var(--primary);">₹ ${x.total > 0 ? x.total : '-'}</span></div>
+          <div style="font-size:0.85rem;">वेळ: ${x.time} | काम: ${x.work} | जमा: ₹ ${x.paid} | बाकी: ₹ ${x.bal}</div>
+          <div style="display:flex; gap:6px; margin-top:6px;"><button class="btn btn-danger btn-sm" onclick="delJcb(${x.id}, '${name}', '${year}')">🗑️ Delete</button></div>
+        `;
+        c.appendChild(r);
+      });
+      showScreen('screen-jcb-detail');
+    }
+    function delJcb(id, name, year) {
+      if(confirm('नोंद हटवायची आहे का?')) {
+        jcbEntries = jcbEntries.filter(x => x.id !== id);
+        setDB('bb_jcbs', jcbEntries);
+        openJcbDetail(name, year);
+      }
+    }
+  </script>
+</body>
+</html>
